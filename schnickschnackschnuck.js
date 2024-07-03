@@ -39,14 +39,14 @@ loader.load('assets/paperHandAnimated.glb', (glb) => {
 
 //HandWaveLeft
 const loader2 = new THREE.GLTFLoader();
-loader2.load('assets/paperHandAnimated.glb', (glb) => {
+loader2.load('assets/handRockTest.glb', (glb) => {
     console.log(glb)
     //const root = gltf.scene;
     //scene.add(root);
     const handWaveLeft = glb.scene;
 
 
-    handWaveLeft.scale.set(0.1, 0.1, 0.1);
+    handWaveLeft.scale.set(0.1, 0.11, 0.1);
     handWaveLeft.rotation.set(0,0,-20);
     handWaveLeft.position.set(-5,0,-2)
 
@@ -55,7 +55,7 @@ loader2.load('assets/paperHandAnimated.glb', (glb) => {
     mixer2 = new THREE.AnimationMixer(handWaveLeft);
 
     const clips2 = glb.animations;
-    const clip2 = THREE.AnimationClip.findByName(clips2, 'HandWave'); //auswählen welche Animation abgespielt werden soll
+    const clip2 = THREE.AnimationClip.findByName(clips2, 'HandRock'); //auswählen welche Animation abgespielt werden soll
     const actionLeft = mixer2.clipAction(clip2);
     actionLeft.play();
 
