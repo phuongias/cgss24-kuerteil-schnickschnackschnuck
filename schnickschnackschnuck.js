@@ -4,67 +4,82 @@ const canvas = document.querySelector(".webgl");
 const scene= new THREE.Scene();
 scene.background = new THREE.Color(0xffffff);
 
-let mixer; //für die Animation
-let mixer2;
+let mixer = null; //für die Animation
+let mixer2 = null;
 
-//HandWaveRight
-const loader = new THREE.GLTFLoader();
-loader.load('assets/paperHandAnimated.glb', (glb) => {
-    console.log(glb)
-    //const root = gltf.scene;
-    //scene.add(root);
-    const handWave = glb.scene;
+//Spieler Klasse um die Animationen zu laden
+class Spieler {
+    constructor(name) {
+        this.name = name;
+        this.mixer = null;
+    }
+
+    //Methode zum Laden der Handanimation
+    loadHandAnimation(url, animationName,handName,mixer,mirror,flipX,flipY,position, scale, rotation) {
+        const loader = new THREE.GLTFLoader();
+        loader.load(url, (glb) => {
+            console.log(glb);
+            this.handName = glb.scene;
+
+            //Spiegelung der Hand, wenn true -> funktioniert noch nicht
+            //https://stackoverflow.com/questions/28630097/flip-mirror-any-object-with-three-js
+            //https://discourse.threejs.org/t/flipped-normals-after-using-scale-x-to-1-mirror-effect/58392
+            if (mirror) {
+                const mirrorScale = new THREE.Vector3(1, 1, 1);
+                if (flipX) {
+                    mirrorScale.x *= -1;
+                }
+                if (flipY) {
+                    mirrorScale.y *= -1;  // Änderung von z zu y
+                }
+
+                this.handName.traverse((child) => {
+                    if (child instanceof THREE.Mesh) {
+                        child.scale.multiply(mirrorScale);
+
+                        if (flipX || flipY) {
+                            child.geometry = child.geometry.clone(); // Klonen der Geometrie
+                            child.geometry.scale(mirrorScale.x, mirrorScale.y, mirrorScale.z);
+                            child.geometry.computeVertexNormals();
+                        }
+                    }
+                });
+            }
 
 
-    handWave.scale.set(0.1, 0.1, 0.1);
-    handWave.rotation.set(0,0,20)
-    handWave.position.set(5,0,-2)
-
-    scene.add(handWave);
-
-    mixer = new THREE.AnimationMixer(handWave);
-
-    const clips = glb.animations;
-    const clip = THREE.AnimationClip.findByName(clips, 'HandWave'); //auswählen welche Animation abgespielt werden soll
-    const action = mixer.clipAction(clip);
-    action.play();
-
-}, function (xhr){
-    console.log((xhr.loaded / xhr.total * 100) + '% loaded')
-},function (error){
-    console.log(error);
-    console.log('An error happened');
-})
+            this.handName.scale.set(...scale);
+            this.handName.rotation.set(...rotation);
+            this.handName.position.set(...position);
+            scene.add(this.handName);
+            this.mixer = new THREE.AnimationMixer(this.handName);
+            const clips = glb.animations;
+            const clip = THREE.AnimationClip.findByName(clips, animationName);
+            const action = this.mixer.clipAction(clip);
+            action.play();
+        }, function (xhr) {
+            console.log((xhr.loaded / xhr.total * 100) + '% loaded');
+        }, function (error) {
+            console.log(error);
+            console.log('An error happened');
+        });
+    }
+}
 
 
-//HandWaveLeft
-const loader2 = new THREE.GLTFLoader();
-loader2.load('assets/handRockTest.glb', (glb) => {
-    console.log(glb)
-    //const root = gltf.scene;
-    //scene.add(root);
-    const handWaveLeft = glb.scene;
+//wenn man vorzeichen bei roation ändert, dann dreht sich
 
 
-    handWaveLeft.scale.set(0.1, 0.11, 0.1);
-    handWaveLeft.rotation.set(0,0,-20);
-    handWaveLeft.position.set(-5,0,-2)
+//Spieler1 -> momentan rechts
+const spieler1 = new Spieler("Spieler 1");
+spieler1.loadHandAnimation('assets/paperHandAnimated.glb',
+    'HandWave','handWave', mixer,false,true,false,[5, 0, -2],
+    [0.1, 0.11, 0.1], [0, 0,20]);
 
-    scene.add(handWaveLeft);
-
-    mixer2 = new THREE.AnimationMixer(handWaveLeft);
-
-    const clips2 = glb.animations;
-    const clip2 = THREE.AnimationClip.findByName(clips2, 'HandRock'); //auswählen welche Animation abgespielt werden soll
-    const actionLeft = mixer2.clipAction(clip2);
-    actionLeft.play();
-
-}, function (xhr){
-    console.log((xhr.loaded / xhr.total * 100) + '% loaded')
-},function (error){
-    console.log(error);
-    console.log('An error happened');
-})
+//Spieler1 -> momentan rechts -> Stein (sieht aber nicht schön aus)
+const spieler2 = new Spieler("Spieler 2");
+spieler2.loadHandAnimation('assets/handRockTest.glb', 'HandRock',
+    'handRock',mixer2,false,false,true,[-5, 0, -4],
+    [0.1, 0.11, 0.1], [0, Math.PI,-20]);
 
 const light = new THREE.DirectionalLight(0xffffff, 1);
 light.position.set(2,2,5)
@@ -75,7 +90,6 @@ scene.add(light);
 /*const geometry = new THREE.BoxGeometry(1,1,1);
 const material = new THREE.MeshBasicMaterial({color: 'red'});
 const boxMesh = new THREE.Mesh(geometry, material);
-
 scene.add(boxMesh);*/
 
 // Boilerplate Code
@@ -101,8 +115,10 @@ const clock = new THREE.Clock();
 function animate(){
     requestAnimationFrame(animate);
     const delta = clock.getDelta()
-    mixer.update(delta);
-    mixer2.update(delta);
+
+    //mixer-Updates
+    if (spieler1.mixer) spieler1.mixer.update(delta);
+    if (spieler2.mixer) spieler2.mixer.update(delta);
     renderer.render(scene,camera);
 }
 
