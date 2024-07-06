@@ -1,6 +1,7 @@
 /*const canvas = document.querySelector(".webgl");
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0xffffff);*/
+// Quellen: shaders -> sparkles: https://www.shadertoy.com/results?query=sparkles
 
 document.addEventListener('DOMContentLoaded', function () {
     init();
@@ -20,9 +21,14 @@ const light = new THREE.DirectionalLight(0xffffff, 1);
 let spieler1 = null;
 let spieler2 = null;
 
-//Spieler kann nur einmal Schere Stein oder Papier ausführen
-let spieler1ActionExecuted = false;
-let spieler2ActionExecuted = false;
+let spieler1Choice = null;
+let spieler2Choice = null;
+
+
+//Spieler kann nur einmal Schere Stein oder Papier ausführen -> nicht mehr notwendig
+// da spieler bis zum countdown mehrfach drücken kann
+/*let spieler1ActionExecuted = false;
+let spieler2ActionExecuted = false;*/
 
 
 //Spieler Klasse
@@ -86,6 +92,7 @@ class Spieler {
     }
 
 
+
     //Methode um Default Stein Movement zu löschen, um andere Aktion auszuführen
     removeHandAnimation() {
         if (this.handName) {
@@ -94,63 +101,106 @@ class Spieler {
         }
     }
 
-    //Methode um Stein, Papier oder Schere auszuführen
+    //Funktion, um Aktionswahl zu speichern
     choosesActionPlayer1(choice) {
-        if (choice === "q") { //i = schere
-            this.removeHandAnimation();
-            this.loadHandAnimation('assets/handScissorsAnimated.glb',
-                'ScissorsHand',
-                'handRock', mixer,
-                false, false, true, [-4.5, 0, -2],
-                [0.1, 0.11, 0.1], [0, 0, -20]);
-        }
-
-        if (choice === "w") { //o = rock/stein
-            this.removeHandAnimation();
-            this.loadHandAnimation('assets/handRockTest.glb', 'HandRock',
-                'handRockDefault1', mixer,
-                false, false, true, [-4.5, 0, -2],
-                [0.1, 0.11, 0.1], [0, 0, -20]);
-        }
-
-        if (choice === "e") { //p = paper
-            this.removeHandAnimation();
-            this.loadHandAnimation('assets/paperHandAnimated.glb',
-                'HandWave', 'handWave',
-                mixer, false, true, true, [-4.5, 0, -2],
-                [0.1, 0.11, 0.1], [0, 0, -20]);
-        }
+        spieler1Choice = choice;
+        checkCountdown();
     }
 
-
-    choosesActionPlayer2(choice2) {
-        if (choice2 === "i") { //i = schere
-            this.removeHandAnimation();
-            this.loadHandAnimation('assets/handScissorsAnimated.glb', 'ScissorsHand',
-                'scissorsHand',mixer2, false,
-                false, false, [4.5, 0, -2],
-                [0.1, 0.11, 0.1], [0, Math.PI, -20]);
-        }
-
-        if (choice2 === "o") { //o = rock/stein
-            this.removeHandAnimation();
-            this.loadHandAnimation('assets/handRockTest.glb', 'HandRock',
-                'handRockDefault2', mixer2, false,
-                false, false, [4.5, 0, -2],
-                [0.1, 0.11, 0.1], [0, Math.PI, -20]);
-        }
-
-        if (choice2 === "p") { //p = paper -> OK
-            //wenn Spieler Aktion ausführt, dann wird default Animation gelöscht
-            this.removeHandAnimation();
-            this.loadHandAnimation('assets/paperHandAnimated.glb',
-                'HandWave', 'handWave', mixer2, false,
-                false, false, [4.5, 0, -2],
-                [0.1, 0.11, 0.1], [0, 0, 20]);
-        }
+    choosesActionPlayer2(choice) {
+        spieler2Choice = choice;
+        checkCountdown();
     }
+}
+
+
+//default Stein Animation
+function loadDefaultAnimation() {
+    spieler1.loadHandAnimation('assets/handRockTest.glb', 'HandRock',
+        'handRockDefault1', null,
+        false, false, true, [-5, 0, -2],
+        [0.1, 0.11, 0.1], [0, 0, -20]);
+
+    spieler2.loadHandAnimation('assets/handRockTest.glb', 'HandRock',
+        'handRockDefault2', mixer2, false,
+        false, false, [4.5, 0, -2],
+        [0.1, 0.11, 0.1], [0, Math.PI, -20]);
 
 }
+
+
+//Methode um Stein, Papier oder Schere auszuführen
+function makeActions() {
+    if (spieler1Choice && spieler2Choice) {
+        //Spieler 1
+        spieler1.removeHandAnimation();
+        if (spieler1Choice === 'q') {
+            spieler1.loadHandAnimation('assets/handScissorsAnimated.glb', 'ScissorsHand',
+                'handRock', mixer, false, false, true,
+                [-4.5, 0, -2], [0.1, 0.11, 0.1], [0, 0, -20]);
+        } else if (spieler1Choice === 'w') {
+            spieler1.loadHandAnimation('assets/handRockTest.glb', 'HandRock', 'handRockDefault1',
+                mixer, false, false, true, [-4.5, 0, -2], [0.1, 0.11, 0.1], [0, 0, -20]);
+        } else if (spieler1Choice === 'e') {
+            spieler1.loadHandAnimation('assets/paperHandAnimated.glb', 'HandWave', 'handWave',
+                mixer, false, true, true,
+                [-4.5, 0, -2], [0.1, 0.11, 0.1], [0, 0, -20]);
+        }
+
+        //Spieler 2
+        spieler2.removeHandAnimation();
+        if (spieler2Choice === 'i') {
+            spieler2.loadHandAnimation('assets/handScissorsAnimated.glb', 'ScissorsHand',
+                'scissorsHand', mixer2, false, false, false,
+                [4.5, 0, -2], [0.1, 0.11, 0.1], [0, Math.PI, -20]);
+        } else if (spieler2Choice === 'o') {
+            spieler2.loadHandAnimation('assets/handRockTest.glb', 'HandRock',
+                'handRockDefault2', mixer2, false, false, false,
+                [4.5, 0, -2], [0.1, 0.11, 0.1], [0, Math.PI, -20]);
+        } else if (spieler2Choice === 'p') {
+            spieler2.loadHandAnimation('assets/paperHandAnimated.glb', 'HandWave',
+                'handWave', mixer2, false, false, false,
+                [4.5, 0, -2], [0.1, 0.11, 0.1], [0, 0, 20]);
+        }
+    }
+
+    spieler1Choice = null;
+    spieler2Choice = null;
+
+}
+
+//Countdown -Code
+//Quelle: https://stackoverflow.com/questions/31106189/create-a-simple-10-second-countdown
+//Quelle: https://stackoverflow.com/questions/74297160/stop-countdown-timer-at-0
+//Quelle: https://stackoverflow.com/questions/31106189/create-a-simple-10-second-countdown
+function startCountdown() {
+    var elem = document.getElementById('countdownHTML');
+    let countdown = 5; //Countdowndauer
+    let countdownInterval = null;
+    countdownInterval = setInterval(() => {
+        if (countdown <= 0) {
+            clearInterval(countdownInterval);
+            if (spieler1Choice && spieler2Choice) {
+                makeActions();
+            } else {
+                startCountdown();
+            }
+        } else {
+            elem.innerHTML = countdown + ' Sekunden';
+            countdown--;
+            //Countdown in HTML anzeigen -> funktioniert noch nicht lol -> muss noch in html datei
+            elem.innerHTML = countdown + ' Sekunden';
+        }
+    }, 1000);
+}
+
+//Funktion um Countdown zu überprüfen, ob beide Spieler gewählt haben
+function checkCountdown() {
+    if (spieler1Choice && spieler2Choice) {
+        startCountdown();
+    }
+}
+
 
 
 function init() {
@@ -177,79 +227,58 @@ function init() {
     scene.add(light);
 
     //Licht
-    const directionalLight = new THREE.DirectionalLight( 0xffffff, 1 );
-    scene.add( directionalLight );
-
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+    scene.add(directionalLight);
     loadDefaultAnimation();
 
-
-    //default Stein Animation
-    function loadDefaultAnimation() {
-        spieler1.loadHandAnimation('assets/handRockTest.glb', 'HandRock',
-            'handRockDefault1', mixer,
-            false, false, true, [-5, 0, -2],
-            [0.1, 0.11, 0.1], [0, 0, -20]);
-
-        spieler2.loadHandAnimation('assets/handRockTest.glb', 'HandRock',
-            'handRockDefault2', mixer2, false,
-            false, false, [4.5, 0, -2],
-            [0.1, 0.11, 0.1], [0, Math.PI, -20]);
-    }
-
-    //Countdown
-    //Quelle: https://stackoverflow.com/questions/31106189/create-a-simple-10-second-countdown
-
-    function startCountdown() {
-
-
-    }
 
 
     //Event listener für Keyboard Input
     //Quelle: https://developer.mozilla.org/en-US/docs/Web/API/Element/keydown_event
     document.addEventListener('keydown', (event) => {
-
         const key = event.key.toLowerCase(); //taste wird abgespeichert
+        //Spieler 1
+        if (key === 'q') {
+            //Schere
+            spieler1.choosesActionPlayer1('q');
+        } else if (key === 'w') {
+            //Papier
+            spieler1.choosesActionPlayer1('w');
+        } else if (key === 'e') {
+            //Stein
+            spieler1.choosesActionPlayer1('e');
+        }
 
-            //Spieler 1
-            if (key === 'q') {
-                //Schere
-                spieler1.choosesActionPlayer1('q');
-            } else if (key === 'w') {
-                //Papier
-                spieler1.choosesActionPlayer1('w');
-            } else if (key === 'e') {
-                //Stein
-                spieler1.choosesActionPlayer1('e');
-            }
+        //Spieler 2
+        if (key === 'i') {
+            //schere
+            spieler2.choosesActionPlayer2('i');
+        } else if (key === 'o') {
+            //stein
+            spieler2.choosesActionPlayer2('o');
+        } else if (key === 'p') {
+            //papier
+            spieler2.choosesActionPlayer2('p');
+        }
 
-            //Spieler 2
-            if (key === 'i' ) {
-                //schere
-                spieler2.choosesActionPlayer2('i');
-            } else if (key === 'o') {
-                //stein
-                spieler2.choosesActionPlayer2('o');
-            } else if (key === 'p') {
-                //papier
-                spieler2.choosesActionPlayer2('p');
-            }
 
     });
 }
 
-
 //Animation loop
-function animate() {
-    requestAnimationFrame(animate);
-    const delta = clock.getDelta();
+    function animate() {
+        requestAnimationFrame(animate);
+        const delta = clock.getDelta();
 
-    if (spieler1 && spieler1.mixer) {
-        spieler1.mixer.update(delta);
-    }
-    if (spieler2 && spieler2.mixer) {
-        spieler2.mixer.update(delta);
-    }
-    renderer.render(scene, camera);
+        if (spieler1 && spieler1.mixer) {
+            spieler1.mixer.update(delta);
+        }
+        if (spieler2 && spieler2.mixer) {
+            spieler2.mixer.update(delta);
+        }
+        renderer.render(scene, camera);
+
 }
+
+
 
