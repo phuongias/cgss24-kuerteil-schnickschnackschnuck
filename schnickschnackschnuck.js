@@ -20,6 +20,9 @@ const light = new THREE.DirectionalLight(0xffffff, 1);
 
 let spieler1 = null;
 let spieler2 = null;
+let background1 = null;
+let background2 = null;
+let background3 = null;
 
 let spieler1Choice = null;
 let spieler2Choice = null;
@@ -91,6 +94,34 @@ class Spieler {
         });
     }
 
+    loadBackgroundAnimation(path, animationName, handName, mixer, position, scale, rotation) {
+        const loader = new THREE.GLTFLoader();
+        loader.load(url, (glb) => {
+            console.log(glb);
+            this.handName = glb.scene;
+
+            //Spiegelung der Hand, wenn true -> funktioniert noch nicht
+            //https://stackoverflow.com/questions/28630097/flip-mirror-any-object-with-three-js
+            //https://discourse.threejs.org/t/flipped-normals-after-using-scale-x-to-1-mirror-effect/58392
+
+
+            this.handName.scale.set(...scale);
+            this.handName.rotation.set(...rotation);
+            this.handName.position.set(...position);
+            scene.add(this.handName);
+            this.mixer = new THREE.AnimationMixer(this.handName);
+            const clips = glb.animations;
+            const clip = THREE.AnimationClip.findByName(clips, animationName);
+            const action = this.mixer.clipAction(clip);
+            action.play();
+        }, function (xhr) {
+            console.log((xhr.loaded / xhr.total * 100) + '% loaded');
+        }, function (error) {
+            console.log(error);
+            console.log('An error happened');
+        });
+    }
+
 
     //Methode um Default Stein Movement zu löschen, um andere Aktion auszuführen
     removeHandAnimation() {
@@ -128,6 +159,30 @@ function loadDefaultAnimation() {
         false,
         true, true, [5, 0.1, -3.4], //5, 0.1, -3.4
         [0.1, 0.11, 0.1], [0,-0.9,0]);
+
+    background1.loadHandAnimation('assets/tom/schnick.glb', 'schnick',
+        'schnickpick', mixer,
+        false,
+        true, true,
+        [0, 0.1, -3.4],
+        [0.1, 0.11, 0.1],
+        [0,0,0])
+
+    background2.loadHandAnimation('assets/tom/schnick.glb', 'schnack',
+        'schnickpick', mixer,
+        false,
+        true, true,
+        [0, 0.1, -3.4],
+        [0.1, 0.11, 0.1],
+        [0,0,0])
+
+    background3.loadHandAnimation('assets/tom/schnick.glb', 'schnuck',
+        'schnickpick', mixer,
+        false,
+        true, true,
+        [0, 0.1, -3.4],
+        [0.1, 0.11, 0.1],
+        [0,0,0])
 
 }
 
@@ -224,8 +279,10 @@ function checkCountdown() {
 function init() {
 
     spieler1 = new Spieler("Spieler 1 / links");
-    spieler2 = new Spieler("Spieler 2 / rechts")
-
+    spieler2 = new Spieler("Spieler 2 / rechts");
+    background1 = new Spieler("awdawd");
+    background2 = new Spieler("awdawd");
+    background3 = new Spieler("awdawd");
     // Setup Three.js environment: scene, camera, renderer
     //const canvas = document.querySelector(".webgl");
     //const scene = new THREE.Scene();
@@ -286,6 +343,10 @@ function init() {
 function animate() {
     requestAnimationFrame(animate);
     const delta = clock.getDelta();
+
+    background1.mixer.update(delta);
+    background2.mixer.update(delta);
+    background3.mixer.update(delta);
 
     if (spieler1 && spieler1.mixer) {
         spieler1.mixer.update(delta);
