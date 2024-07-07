@@ -115,15 +115,19 @@ class Spieler {
 
 //default Faust Animation
 function loadDefaultAnimation() {
-    spieler1.loadHandAnimation('assets/phuong/faustAnimation.glb', 'HandRock',
-        'handRockDefault1', null,
-        false, false, true, [-5, 0, -2],
-        [0.1, 0.11, 0.1], [0, 0, -20]);
+    //links
+    spieler1.loadHandAnimation('assets/tom/main_faustanimation_mirror_final.glb', 'faust',
+        'handRockDefault1', mixer2,
+        false,
+        true, true, [-5, 0, -3.5], //-5, 0, -2
+        [0.1, 0.11, 0.1], [0,0,0]);
 
-    spieler2.loadHandAnimation('assets/phuong/faustAnimation.glb', 'HandRock',
-        'handRockDefault2', mixer2, false,
-        true, true, [5, 0, -2],
-        [0.1, 0.11, 0.1], [0, Math.PI, -20]);
+    //rechts
+    spieler2.loadHandAnimation('assets/tom/main_faustanimation_final.glb', 'faust',
+        'handRockDefault2', mixer2,
+        false,
+        true, true, [5, 0.1, -3.4], //5, 0.1, -3.4
+        [0.1, 0.11, 0.1], [0,-0.9,0]);
 
 }
 
@@ -136,20 +140,20 @@ function makeActions() {
         switch (spieler1Choice) {
             //Spieler 1
             case 'q':
-                spieler1.loadHandAnimation('assets/phuong/handScissorsAnimated.glb', 'ScissorsHand',
+                spieler1.loadHandAnimation('assets/tom/schere_final.glb', 'schere',
                     'handRock', mixer, false, false, true,
                     [-4.5, 0, -2], [0.1, 0.11, 0.1], [0, 0, -20]);
                 break;
             case 'w':
-                spieler1.loadHandAnimation('assets/phuong/faustAnimation.glb', 'HandRock',
+                spieler1.loadHandAnimation('assets/tom/stein_final.glb', 'stein',
                     'handRockDefault1',
                     mixer, false, false, true,
                     [-4.5, 0, -2], [0.1, 0.11, 0.1], [0, 0, -20]);
                 break;
 
             case 'e':
-                spieler1.loadHandAnimation('assets/phuong/paperHandAnimated.glb',
-                    'HandWave', 'handWave',
+                spieler1.loadHandAnimation('assets/tom/papier_final.glb',
+                    'HandWave', 'papier',
                     mixer, false, true, true,
                     [-4.5, 0, -2], [0.1, 0.11, 0.1], [0, 0, -20]);
                 break;
@@ -161,20 +165,20 @@ function makeActions() {
         spieler2.removeHandAnimation();//default Stein entfernen
         switch (spieler2Choice) {
             case 'i':
-                spieler2.loadHandAnimation('assets/phuong/handScissorsAnimated.glb', 'ScissorsHand',
+                spieler2.loadHandAnimation('assets/tom/schere_final.glb', 'schere',
                     'scissorsHand', mixer2, false, false, false,
                     [4.5, 0, -2], [0.1, 0.11, 0.1], [0, Math.PI, -20]);
                 break;
 
             case 'o':
-                spieler2.loadHandAnimation('assets/phuong/faustAnimation.glb', 'HandRock',
+                spieler2.loadHandAnimation('assets/tom/stein_final.glb', 'stein',
                     'handRockDefault2', mixer2, false, false, false,
                     [4.5, 0, -2], [0.1, 0.11, 0.1], [0, Math.PI, -20]);
                 break;
 
             case 'p':
 
-                spieler2.loadHandAnimation('assets/phuong/paperHandAnimated.glb', 'HandWave',
+                spieler2.loadHandAnimation('assets/tom/papier_final.glb', 'papier',
                     'handWave', mixer2, false, false, false,
                     [4.5, 0, -2], [0.1, 0.11, 0.1], [0, 0, 20]);
                 break;
