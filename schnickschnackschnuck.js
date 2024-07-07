@@ -183,6 +183,8 @@ function makeActions() {
                     [4.5, 0, -2], [0.1, 0.11, 0.1], [0, 0, 20]);
                 break;
         }
+
+        findOutCome(); //resultat anzeigen
     }
     spieler1Choice = null;
     spieler2Choice = null;
@@ -221,6 +223,55 @@ function checkCountdown() {
 }
 
 
+
+//Funktion um Ergebnis zu finden
+function findOutCome() {
+    if (spieler1Choice && spieler2Choice) {
+
+         if (spieler1Choice === 'q' && spieler2Choice === 'i') {
+            //Schere vs Schere
+            console.log('Unentschieden: Schere');
+
+        } else if (spieler1Choice === 'w' && spieler2Choice === 'o') {
+            //Stein vs Stein
+            console.log('Unentschieden: beide Stein');
+
+        } else if (spieler1Choice === 'e' && spieler2Choice === 'p') {
+            //Paper vs Papier
+            console.log('Unentschieden: beide Papier');
+
+        } else if (spieler1Choice === 'q' && spieler2Choice === 'o') {
+            //Spieler 1: SCHERE vs. Spieler 2: STEIN
+            console.log('Spieler 2 gewinnt: Stein schlägt Schere');
+
+        } else if (spieler1Choice === 'q' && spieler2Choice === 'p') {
+            //Spieler 1: SCHERE vs. Spieler 2: PAPIER
+            console.log('Spieler 1 gewinnt: Schere schneidet Papier');
+
+        } else if (spieler1Choice === 'w' && spieler2Choice === 'i') {
+            //Spieler 1: STEIN vs. Spieler 2: SCHERE
+            console.log('Spieler 1 gewinnt: Stein schlägt Schere');
+
+        } else if (spieler1Choice === 'w' && spieler2Choice === 'p') {
+            //Spieler 1: STEIN vs. Spieler 2: SCHERE
+            console.log('Spieler 2 gewinnt: Papier umhüllt Stein');
+
+        } else if (spieler1Choice === 'e' && spieler2Choice === 'i') {
+            //Spieler 1: PAPIER vs. Spieler 2: SCHERE
+            console.log('Spieler 2 gewinnt: Schere schneidet Papier');
+
+        } else if (spieler1Choice === 'e' && spieler2Choice === 'o') {
+            //Spieler 1: PAPIER vs. Spieler 2: STEIN
+            console.log('Spieler 1 gewinnt: Papier umhüllt Stein');
+        }
+
+
+
+    }
+
+}
+
+
 function init() {
 
     spieler1 = new Spieler("Spieler 1 / links");
@@ -247,6 +298,8 @@ function init() {
     //Licht
     const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
     scene.add(directionalLight);
+
+    //zuerst wird faust angezeigt
     loadDefaultAnimation();
 
 
