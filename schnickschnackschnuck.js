@@ -116,14 +116,14 @@ class Spieler {
 
 //default Stein Animation
 function loadDefaultAnimation() {
-    spieler1.loadHandAnimation('assets/handRockTest.glb', 'HandRock',
+    spieler1.loadHandAnimation('assets/tom/main_faustanimation_final.glb', 'faust',
         'handRockDefault1', null,
         false, false, true, [-5, 0, -2],
-        [0.1, 0.11, 0.1], [0, 0, -20]);
+        [0.1, 0.11, 0.1], [0, 0, 0]);
 
-    spieler2.loadHandAnimation('assets/handRockTest.glb', 'HandRock',
+    spieler2.loadHandAnimation('assets/tom/main_faustanimation_final.glb', 'faust',
         'handRockDefault2', mixer2, false,
-        false, false, [4.5, 0, -2],
+        true, true, [4.5, 0, -2],
         [0.1, 0.11, 0.1], [0, Math.PI, -20]);
 
 }
