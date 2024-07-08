@@ -47,45 +47,11 @@ class Spieler {
     //Methode zum Laden der Handanimation
     //Quelle: https://youtu.be/yPA2z7fl4J8?si=F7DOcu4_3Tney-4F -> Load 3D Object from blender in Three.js
     //Quelle: https://youtu.be/GByT8ActvDk?si=C7BWX5MIsQl_UmwL -> Load Animation frm blender in Three.js
-    loadHandAnimation(url, animationName, handName, mixer, position, scale, rotation) {
-
+    loadHandAnimation(path, animationName, handName, mixer, position, scale, rotation) {
         const loader = new THREE.GLTFLoader();
-        loader.load(url, (glb) => {
+        loader.load(path, (glb) => {
             console.log(glb);
             this.handName = glb.scene;
-
-            //Spiegelung der Hand, wenn true -> funktioniert nicht
-            //https://stackoverflow.com/questions/28630097/flip-mirror-any-object-with-three-js
-            //https://discourse.threejs.org/t/flipped-normals-after-using-scale-x-to-1-mirror-effect/58392
-
-            this.handName.scale.set(...scale);
-            this.handName.rotation.set(...rotation);
-            this.handName.position.set(...position);
-            scene.add(this.handName);
-            this.mixer = new THREE.AnimationMixer(this.handName);
-            const clips = glb.animations;
-            const clip = THREE.AnimationClip.findByName(clips, animationName);
-            const action = this.mixer.clipAction(clip);
-            action.play();
-
-        }, function (xhr) {
-            console.log((xhr.loaded / xhr.total * 100) + '% loaded');
-        }, function (error) {
-            console.log(error);
-            console.log('An error happened');
-        });
-    }
-
-
-    loadBackgroundAnimation(path, animationName, handName, mixer, position, scale, rotation) {
-        const loader = new THREE.GLTFLoader();
-        loader.load(url, (glb) => {
-            console.log(glb);
-            this.handName = glb.scene;
-
-            //Spiegelung der Hand, wenn true -> funktioniert noch nicht
-            //https://stackoverflow.com/questions/28630097/flip-mirror-any-object-with-three-js
-            //https://discourse.threejs.org/t/flipped-normals-after-using-scale-x-to-1-mirror-effect/58392
 
             this.handName.scale.set(...scale);
             this.handName.rotation.set(...rotation);
@@ -103,7 +69,6 @@ class Spieler {
             console.log('An error happened');
         });
     }
-
 
     //Methode um Default Stein Movement zu löschen, um andere Aktion auszuführen
     removeHandAnimation() {
@@ -129,37 +94,39 @@ class Spieler {
 //default Faust Animation
 function loadDefaultAnimation() {
     //links
-    spieler1.loadHandAnimation('assets/tom/main_faustanimation_mirror_final.glb', 'faust',
+    spieler1.loadHandAnimation('assets/tom/main_mirror_schnickschnack.glb', 'faust',
         'handRockDefault1', mixer2,
-        [-5, 0, -3.5], // [-5,0,-2]
-        [0.1, 0.11, 0.1], [0, 0, 0]);
+        [-5, 0, -3.5], //-5, 0, -2
+        [0.1, 0.11, 0.1],
+        [0,0,0]);
 
     //rechts
-    spieler2.loadHandAnimation('assets/tom/main_faustanimation_final.glb', 'faust',
+    spieler2.loadHandAnimation('assets/tom/main_schnickschnack.glb', 'faust',
         'handRockDefault2', mixer2,
         [5, 0.1, -3.4], //5, 0.1, -3.4
-        [0.1, 0.11, 0.1], [0, -0.9, 0]);
+        [0.1, 0.11, 0.1],
+        [0,-0.9,0]);
 
-    /*spieler3.loadHandAnimation('assets/tom/main_faustanimation_final.glb', 'faust',
-        'handRockDefault2', mixer,
-        [0, 0.1, -3.4], //5, 0.1, -3.4
-        [0.06, 0.11, 0.1], [0, -0.9, 0]);*/
 
     background1.loadHandAnimation('assets/tom/schnick.glb', 'schnick',
         'schnickpick', mixer,
-        [0, 0.1, -3.4],
+        [0, 0.1, -1],
         [0.1, 0.11, 0.1],
-        [0, 0, 0])
+        [0,0,0])
 
-    background2.loadHandAnimation('assets/tom/schnick.glb', 'schnack',
+    background2.loadHandAnimation('assets/tom/schnack.glb', 'schnack',
         'schnickpick', mixer,
-        [0, 0.1, -3.4],
-        [0.1, 0.11, 0.1], [0, 0, 0])
+        [0, 0.1, -2],
+        [0.1, 0.11, 0.1],
+        [0,0,0])
 
-    background3.loadHandAnimation('assets/tom/schnick.glb', 'schnuck',
+    background3.loadHandAnimation('assets/tom/only_schnuck_placeholder.glb', 'schnuck2',
         'schnickpick', mixer,
-        [0, 0.1, -3.4],
-        [0.1, 0.11, 0.1], [0, 0, 0])
+        [5, 0.1, -200],
+        [0.1, 0.11, 0.1],
+        [0,0,0])
+
+
 
 }
 
@@ -169,31 +136,36 @@ function makeActions() {
     if (spieler1Choice && spieler2Choice) {//wenn beide Spieler gedrückt haben
 
         spieler1.removeHandAnimation();
+        findOutcome(); //resultat anzeigen TODO: globale Animationsnamen ändern, um "Gewinneranimationen" zu zeigen?
+
         switch (spieler1Choice) {
             //Spieler 1
             case 'q':
                 spieler1.loadHandAnimation('assets/tom/schere_final.glb', 'schere',
                     'handRock', mixer,
-                    [-4.5, 0, -2], [0.1, 0.11, 0.1], [0, 0, -20]);
+                    [-4.5, 0, -2],
+                    [0.1, 0.11, 0.1],
+                    [0, 0, -20]);
                 break;
             case 'w':
                 spieler1.loadHandAnimation('assets/tom/stein_final.glb', 'stein',
-                    'handRockDefault1',
-                    mixer,
-                    [-4.5, 0, -2], [0.1, 0.11, 0.1], [0, 0, -20]);
+                    'handRockDefault1', mixer,
+                    [-4.5, 0, -2],
+                    [0.1, 0.11, 0.1],
+                    [0, 0, -20]);
                 break;
 
             case 'e':
                 spieler1.loadHandAnimation('assets/tom/papier_final.glb',
-                    'HandWave', 'papier',
-                    mixer, [-4.5, 0, -2], [0.1, 0.11, 0.1], [0, 0, -20]);
+                    'HandWave', 'papier', mixer,
+                    [-4.5, 0, -2], [0.1, 0.11, 0.1], [0, 0, -20]);
                 break;
 
 
         }
-
         //Spieler 2
         spieler2.removeHandAnimation();//default Stein entfernen
+
         switch (spieler2Choice) {
             case 'i':
                 spieler2.loadHandAnimation('assets/tom/schere_final.glb', 'schere',
@@ -208,18 +180,28 @@ function makeActions() {
                 break;
 
             case 'p':
-
                 spieler2.loadHandAnimation('assets/tom/papier_final.glb', 'papier',
                     'handWave', mixer2,
                     [4.5, 0, -2], [0.1, 0.11, 0.1], [0, 0, 20]);
                 break;
         }
-
-        findOutCome(); //resultat anzeigen
     }
     spieler1Choice = null;
     spieler2Choice = null;
 
+}
+
+function loadSchnuckAnimation() {
+    background1.removeHandAnimation();
+    background2.removeHandAnimation();
+    //spieler1.removeHandAnimation();
+    //spieler2.removeHandAnimation();
+    background3.loadHandAnimation('assets/tom/only_schnuck.glb', 'schnuck',
+        'schnickpick', mixer2,
+        [0, 0.1, -3.4],
+        [0.2, 0.11, 0.1],//0.15, 0.15, 0.15
+        [0,0,0])
+    //background3.mixer.update(delta);
 }
 
 //Countdown -Code
@@ -228,13 +210,15 @@ function makeActions() {
 //Quelle: https://stackoverflow.com/questions/31106189/create-a-simple-10-second-countdown
 function startCountdown() {
     //var elem = document.getElementById('countdownHTML');
-    let countdown = 3; //Countdowndauer
+    loadSchnuckAnimation();
+    let countdown = 1; //Countdowndauer
     let countdownInterval = null;
     countdownInterval = setInterval(() => {
         if (countdown <= 0) {
             clearInterval(countdownInterval);
             if (spieler1Choice && spieler2Choice) {
                 makeActions();
+
             } else {
                 startCountdown();
             }
@@ -243,7 +227,7 @@ function startCountdown() {
             //Countdown in HTML anzeigen -> funktioniert noch nicht lol -> muss noch in html datei
 
         }
-    }, 1000);
+    }, 100);
 }
 
 //Funktion um Countdown zu überprüfen, ob beide Spieler gewählt haben
@@ -346,7 +330,6 @@ function findOutCome() {
 
 
     }
-
 }
 
 
@@ -421,18 +404,19 @@ function animate() {
     requestAnimationFrame(animate);
     const delta = clock.getDelta();
 
-
-    if (spieler1 && spieler1.mixer) {
-        spieler1.mixer.update(delta);
-    }
-    if (spieler2 && spieler2.mixer) {
-        spieler2.mixer.update(delta);
-    }
-
     background1.mixer.update(delta);
     background2.mixer.update(delta);
     background3.mixer.update(delta);
 
+
+    if (spieler1 && spieler1.mixer) {
+        spieler1.mixer.update(delta);
+    }
+
+    if (spieler2 && spieler2.mixer) {
+        spieler2.mixer.update(delta);
+
+    }
     renderer.render(scene, camera);
 
 }
