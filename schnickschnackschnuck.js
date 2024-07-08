@@ -47,7 +47,8 @@ class Spieler {
     //Methode zum Laden der Handanimation
     //Quelle: https://youtu.be/yPA2z7fl4J8?si=F7DOcu4_3Tney-4F -> Load 3D Object from blender in Three.js
     //Quelle: https://youtu.be/GByT8ActvDk?si=C7BWX5MIsQl_UmwL -> Load Animation frm blender in Three.js
-    loadHandAnimation(url, animationName, handName,mixer, position, scale, rotation) {
+    loadHandAnimation(url, animationName, handName, mixer, position, scale, rotation) {
+
         const loader = new THREE.GLTFLoader();
         loader.load(url, (glb) => {
             console.log(glb);
@@ -75,6 +76,7 @@ class Spieler {
         });
     }
 
+
     loadBackgroundAnimation(path, animationName, handName, mixer, position, scale, rotation) {
         const loader = new THREE.GLTFLoader();
         loader.load(url, (glb) => {
@@ -84,7 +86,6 @@ class Spieler {
             //Spiegelung der Hand, wenn true -> funktioniert noch nicht
             //https://stackoverflow.com/questions/28630097/flip-mirror-any-object-with-three-js
             //https://discourse.threejs.org/t/flipped-normals-after-using-scale-x-to-1-mirror-effect/58392
-
 
             this.handName.scale.set(...scale);
             this.handName.rotation.set(...rotation);
@@ -131,18 +132,18 @@ function loadDefaultAnimation() {
     spieler1.loadHandAnimation('assets/tom/main_faustanimation_mirror_final.glb', 'faust',
         'handRockDefault1', mixer2,
         [-5, 0, -3.5], // [-5,0,-2]
-        [0.1, 0.11, 0.1], [0,0,0]);
+        [0.1, 0.11, 0.1], [0, 0, 0]);
 
     //rechts
     spieler2.loadHandAnimation('assets/tom/main_faustanimation_final.glb', 'faust',
         'handRockDefault2', mixer2,
         [5, 0.1, -3.4], //5, 0.1, -3.4
-        [0.1, 0.11, 0.1],[0, -0.9, 0]);
+        [0.1, 0.11, 0.1], [0, -0.9, 0]);
 
-    spieler3.loadHandAnimation('assets/tom/main_faustanimation_final.glb', 'faust',
+    /*spieler3.loadHandAnimation('assets/tom/main_faustanimation_final.glb', 'faust',
         'handRockDefault2', mixer,
         [0, 0.1, -3.4], //5, 0.1, -3.4
-        [0.06, 0.11, 0.1], [0, -0.9, 0]);
+        [0.06, 0.11, 0.1], [0, -0.9, 0]);*/
 
     background1.loadHandAnimation('assets/tom/schnick.glb', 'schnick',
         'schnickpick', mixer,
@@ -253,46 +254,95 @@ function checkCountdown() {
 }
 
 
+
+//Funktion um Ergebnis anzuzeigen mit FontLoader
+//Quelle: https://www.youtube.com/watch?v=IA3HjAV2nzU
+//Quelle: https://threejs.org/docs/#examples/en/loaders/FontLoader
+function showResult(text) {
+    const fontLoader = new THREE.FontLoader();
+    fontLoader.load('assets/fonts/regularDay.json', (font) => {
+        const textGeometry = new THREE.TextGeometry(text, {
+            font: font,
+            size: 0.1,
+            height: 0.1,
+            curveSegments: 12,
+        })
+
+        //testMesh ist der Text der angezeigt werden soll
+        const textMesh = new THREE.Mesh(textGeometry,
+            [new THREE.MeshPhongMaterial({color: 'red'}), //front
+                new THREE.MeshPhongMaterial({color: 'red'}) //side
+            ])
+
+        textMesh.castShadow = true;
+        textMesh.position.set(-2, 0, -2);
+        textMesh.rotation.y = 0;
+        scene.add(textMesh);
+
+    });
+}
+
+
 //Funktion um Ergebnis zu finden
 function findOutCome() {
+    let resultMessage = '';
     if (spieler1Choice && spieler2Choice) {
 
         if (spieler1Choice === 'q' && spieler2Choice === 'i') {
             //Schere vs Schere
             console.log('Unentschieden: Schere');
+            resultMessage = 'Unentschieden: Schere';
+
 
         } else if (spieler1Choice === 'w' && spieler2Choice === 'o') {
             //Stein vs Stein
             console.log('Unentschieden: beide Stein');
+            resultMessage = 'Unentschieden: beide Stein';
+
 
         } else if (spieler1Choice === 'e' && spieler2Choice === 'p') {
             //Paper vs Papier
             console.log('Unentschieden: beide Papier');
+            resultMessage = 'Unentschieden: beide Papier';
+
 
         } else if (spieler1Choice === 'q' && spieler2Choice === 'o') {
             //Spieler 1: SCHERE vs. Spieler 2: STEIN
             console.log('Spieler 2 gewinnt: Stein schlägt Schere');
+            resultMessage = 'Spieler 2 gewinnt: Stein schlägt Schere';
+
 
         } else if (spieler1Choice === 'q' && spieler2Choice === 'p') {
             //Spieler 1: SCHERE vs. Spieler 2: PAPIER
             console.log('Spieler 1 gewinnt: Schere schneidet Papier');
+            resultMessage = 'Spieler 1 gewinnt: Schere schneidet Papier';
+
 
         } else if (spieler1Choice === 'w' && spieler2Choice === 'i') {
             //Spieler 1: STEIN vs. Spieler 2: SCHERE
             console.log('Spieler 1 gewinnt: Stein schlägt Schere');
+            resultMessage = 'Spieler 1 gewinnt: Stein schlägt Schere';
+
 
         } else if (spieler1Choice === 'w' && spieler2Choice === 'p') {
             //Spieler 1: STEIN vs. Spieler 2: SCHERE
             console.log('Spieler 2 gewinnt: Papier umhüllt Stein');
+            resultMessage = 'Spieler 2 gewinnt: Papier umhüllt Stein';
+
 
         } else if (spieler1Choice === 'e' && spieler2Choice === 'i') {
             //Spieler 1: PAPIER vs. Spieler 2: SCHERE
             console.log('Spieler 2 gewinnt: Schere schneidet Papier');
+            resultMessage = 'Spieler 2 gewinnt: Schere schneidet Papier';
+
 
         } else if (spieler1Choice === 'e' && spieler2Choice === 'o') {
             //Spieler 1: PAPIER vs. Spieler 2: STEIN
             console.log('Spieler 1 gewinnt: Papier umhüllt Stein');
+            resultMessage = 'Spieler 1 gewinnt: Papier umhüllt Stein';
+
         }
+        showResult(resultMessage)
 
 
     }
@@ -301,7 +351,6 @@ function findOutCome() {
 
 
 function init() {
-
     spieler1 = new Spieler("Spieler 1 / links");
     spieler2 = new Spieler("Spieler 2 / rechts");
     spieler3 = new Spieler("Spieler 2 / rechts");
