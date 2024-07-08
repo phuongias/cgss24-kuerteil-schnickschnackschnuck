@@ -20,6 +20,7 @@ const light = new THREE.DirectionalLight(0xffffff, 1);
 
 let spieler1 = null;
 let spieler2 = null;
+let spieler3 = null;
 let background1 = null;
 let background2 = null;
 let background3 = null;
@@ -159,6 +160,12 @@ function loadDefaultAnimation() {
         false,
         true, true, [5, 0.1, -3.4], //5, 0.1, -3.4
         [0.1, 0.11, 0.1], [0,-0.9,0]);
+
+    spieler3.loadHandAnimation('assets/tom/main_faustanimation_final.glb', 'faust',
+        'handRockDefault2', mixer,
+        false,
+        true, true, [0, 0.1, -3.4], //5, 0.1, -3.4
+        [0.06, 0.11, 0.1], [0,-0.9,0]);
 
     background1.loadHandAnimation('assets/tom/schnick.glb', 'schnick',
         'schnickpick', mixer,
@@ -331,6 +338,7 @@ function init() {
 
     spieler1 = new Spieler("Spieler 1 / links");
     spieler2 = new Spieler("Spieler 2 / rechts");
+    spieler3 = new Spieler("Spieler 2 / rechts");
     background1 = new Spieler("awdawd");
     background2 = new Spieler("awdawd");
     background3 = new Spieler("awdawd");
