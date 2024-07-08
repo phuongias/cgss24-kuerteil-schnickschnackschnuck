@@ -47,36 +47,15 @@ class Spieler {
     //Methode zum Laden der Handanimation
     //Quelle: https://youtu.be/yPA2z7fl4J8?si=F7DOcu4_3Tney-4F -> Load 3D Object from blender in Three.js
     //Quelle: https://youtu.be/GByT8ActvDk?si=C7BWX5MIsQl_UmwL -> Load Animation frm blender in Three.js
-    loadHandAnimation(url, animationName, handName, mixer, mirror, flipX, flipY, position, scale, rotation) {
+    loadHandAnimation(url, animationName, handName,mixer, position, scale, rotation) {
         const loader = new THREE.GLTFLoader();
         loader.load(url, (glb) => {
             console.log(glb);
             this.handName = glb.scene;
 
-            //Spiegelung der Hand, wenn true -> funktioniert noch nicht
+            //Spiegelung der Hand, wenn true -> funktioniert nicht
             //https://stackoverflow.com/questions/28630097/flip-mirror-any-object-with-three-js
             //https://discourse.threejs.org/t/flipped-normals-after-using-scale-x-to-1-mirror-effect/58392
-            if (mirror) {
-                const mirrorScale = new THREE.Vector3(1, 1, 1);
-                if (flipX) {
-                    mirrorScale.x *= -1;
-                }
-                if (flipY) {
-                    mirrorScale.y *= -1;  // Änderung von z zu y
-                }
-
-                this.handName.traverse((child) => {
-                    if (child instanceof THREE.Mesh) {
-                        child.scale.multiply(mirrorScale);
-
-                        if (flipX || flipY) {
-                            child.geometry = child.geometry.clone();
-                            child.geometry.scale(mirrorScale.x, mirrorScale.y, mirrorScale.z);
-                            child.geometry.computeVertexNormals();
-                        }
-                    }
-                });
-            }
 
             this.handName.scale.set(...scale);
             this.handName.rotation.set(...rotation);
@@ -87,6 +66,7 @@ class Spieler {
             const clip = THREE.AnimationClip.findByName(clips, animationName);
             const action = this.mixer.clipAction(clip);
             action.play();
+
         }, function (xhr) {
             console.log((xhr.loaded / xhr.total * 100) + '% loaded');
         }, function (error) {
@@ -150,46 +130,35 @@ function loadDefaultAnimation() {
     //links
     spieler1.loadHandAnimation('assets/tom/main_faustanimation_mirror_final.glb', 'faust',
         'handRockDefault1', mixer2,
-        false,
-        true, true, [-5, 0, -3.5], //-5, 0, -2
+        [-5, 0, -3.5], // [-5,0,-2]
         [0.1, 0.11, 0.1], [0,0,0]);
 
     //rechts
     spieler2.loadHandAnimation('assets/tom/main_faustanimation_final.glb', 'faust',
         'handRockDefault2', mixer2,
-        false,
-        true, true, [5, 0.1, -3.4], //5, 0.1, -3.4
-        [0.1, 0.11, 0.1], [0,-0.9,0]);
+        [5, 0.1, -3.4], //5, 0.1, -3.4
+        [0.1, 0.11, 0.1],[0, -0.9, 0]);
 
     spieler3.loadHandAnimation('assets/tom/main_faustanimation_final.glb', 'faust',
         'handRockDefault2', mixer,
-        false,
-        true, true, [0, 0.1, -3.4], //5, 0.1, -3.4
-        [0.06, 0.11, 0.1], [0,-0.9,0]);
+        [0, 0.1, -3.4], //5, 0.1, -3.4
+        [0.06, 0.11, 0.1], [0, -0.9, 0]);
 
     background1.loadHandAnimation('assets/tom/schnick.glb', 'schnick',
         'schnickpick', mixer,
-        false,
-        true, true,
         [0, 0.1, -3.4],
         [0.1, 0.11, 0.1],
-        [0,0,0])
+        [0, 0, 0])
 
     background2.loadHandAnimation('assets/tom/schnick.glb', 'schnack',
         'schnickpick', mixer,
-        false,
-        true, true,
         [0, 0.1, -3.4],
-        [0.1, 0.11, 0.1],
-        [0,0,0])
+        [0.1, 0.11, 0.1], [0, 0, 0])
 
     background3.loadHandAnimation('assets/tom/schnick.glb', 'schnuck',
         'schnickpick', mixer,
-        false,
-        true, true,
         [0, 0.1, -3.4],
-        [0.1, 0.11, 0.1],
-        [0,0,0])
+        [0.1, 0.11, 0.1], [0, 0, 0])
 
 }
 
@@ -203,21 +172,20 @@ function makeActions() {
             //Spieler 1
             case 'q':
                 spieler1.loadHandAnimation('assets/tom/schere_final.glb', 'schere',
-                    'handRock', mixer, false, false, true,
+                    'handRock', mixer,
                     [-4.5, 0, -2], [0.1, 0.11, 0.1], [0, 0, -20]);
                 break;
             case 'w':
                 spieler1.loadHandAnimation('assets/tom/stein_final.glb', 'stein',
                     'handRockDefault1',
-                    mixer, false, false, true,
+                    mixer,
                     [-4.5, 0, -2], [0.1, 0.11, 0.1], [0, 0, -20]);
                 break;
 
             case 'e':
                 spieler1.loadHandAnimation('assets/tom/papier_final.glb',
                     'HandWave', 'papier',
-                    mixer, false, true, true,
-                    [-4.5, 0, -2], [0.1, 0.11, 0.1], [0, 0, -20]);
+                    mixer, [-4.5, 0, -2], [0.1, 0.11, 0.1], [0, 0, -20]);
                 break;
 
 
@@ -228,20 +196,20 @@ function makeActions() {
         switch (spieler2Choice) {
             case 'i':
                 spieler2.loadHandAnimation('assets/tom/schere_final.glb', 'schere',
-                    'scissorsHand', mixer2, false, false, false,
+                    'scissorsHand', mixer2,
                     [4.5, 0, -2], [0.1, 0.11, 0.1], [0, Math.PI, -20]);
                 break;
 
             case 'o':
                 spieler2.loadHandAnimation('assets/tom/stein_final.glb', 'stein',
-                    'handRockDefault2', mixer2, false, false, false,
+                    'handRockDefault2', mixer2,
                     [4.5, 0, -2], [0.1, 0.11, 0.1], [0, Math.PI, -20]);
                 break;
 
             case 'p':
 
                 spieler2.loadHandAnimation('assets/tom/papier_final.glb', 'papier',
-                    'handWave', mixer2, false, false, false,
+                    'handWave', mixer2,
                     [4.5, 0, -2], [0.1, 0.11, 0.1], [0, 0, 20]);
                 break;
         }
@@ -285,12 +253,11 @@ function checkCountdown() {
 }
 
 
-
 //Funktion um Ergebnis zu finden
 function findOutCome() {
     if (spieler1Choice && spieler2Choice) {
 
-         if (spieler1Choice === 'q' && spieler2Choice === 'i') {
+        if (spieler1Choice === 'q' && spieler2Choice === 'i') {
             //Schere vs Schere
             console.log('Unentschieden: Schere');
 
@@ -328,7 +295,6 @@ function findOutCome() {
         }
 
 
-
     }
 
 }
@@ -346,6 +312,7 @@ function init() {
     //const canvas = document.querySelector(".webgl");
     //const scene = new THREE.Scene();
     scene.background = new THREE.Color(0xffffff);
+
     //const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 100);
     camera.position.set(0, 1, 2);
     scene.add(camera);
@@ -405,9 +372,6 @@ function animate() {
     requestAnimationFrame(animate);
     const delta = clock.getDelta();
 
-    background1.mixer.update(delta);
-    background2.mixer.update(delta);
-    background3.mixer.update(delta);
 
     if (spieler1 && spieler1.mixer) {
         spieler1.mixer.update(delta);
@@ -415,6 +379,11 @@ function animate() {
     if (spieler2 && spieler2.mixer) {
         spieler2.mixer.update(delta);
     }
+
+    background1.mixer.update(delta);
+    background2.mixer.update(delta);
+    background3.mixer.update(delta);
+
     renderer.render(scene, camera);
 
 }
