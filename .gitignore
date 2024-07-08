@@ -14,6 +14,7 @@ test/treeshake/index-src.bundle.min.js
 test/treeshake/stats.html
 test/e2e/chromium
 test/e2e/output-screenshots
+assets/tom/blenderfiles_tom/deprecated
 
 **/node_modules
 three.js-master/*
