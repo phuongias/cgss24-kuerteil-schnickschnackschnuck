@@ -130,7 +130,6 @@ function loadDefaultAnimation() {
 }
 
 
-
 //Methode um Stein, Papier oder Schere auszuführen
 function makeActions() {
     if (spieler1Choice && spieler2Choice) {//wenn beide Spieler gedrückt haben
@@ -164,7 +163,7 @@ function makeActions() {
 
         }
         //Spieler 2
-        spieler2.removeHandAnimation();//default Stein entfernen
+        spieler2.removeAnimation();//default Stein entfernen
 
         switch (spieler2Choice) {
             case 'i':
@@ -194,17 +193,17 @@ function makeActions() {
 function loadSchnuckAnimation() {
     background1.removeAnimation();
     background2.removeAnimation();
-    //spieler1.removeHandAnimation();
-    //spieler2.removeHandAnimation();
+    //spieler1.removeAnimation();
+    //spieler2.removeAnimation();
     background3.loadAnimation('assets/tom/only_schnuck.glb', 'schnuck',
         'schnickpick', mixer2,
         [0, 0.1, -3.4],
         [0.2, 0.11, 0.1],//0.15, 0.15, 0.15
-        [0,0,0])
+        [0, 0, 0])
     //background3.mixer.update(delta);
 }
 
-//Countdown -Code
+//Countdown - Code
 //Quelle: https://stackoverflow.com/questions/31106189/create-a-simple-10-second-countdown
 //Quelle: https://stackoverflow.com/questions/74297160/stop-countdown-timer-at-0
 //Quelle: https://stackoverflow.com/questions/31106189/create-a-simple-10-second-countdown
@@ -235,7 +234,6 @@ function checkCountdown() {
         startCountdown();
     }
 }
-
 
 
 //Funktion um Ergebnis anzuzeigen mit FontLoader
@@ -339,12 +337,8 @@ function init() {
     background1 = new Spieler("awdawd");
     background2 = new Spieler("awdawd");
     background3 = new Spieler("awdawd");
-    // Setup Three.js environment: scene, camera, renderer
-    //const canvas = document.querySelector(".webgl");
-    //const scene = new THREE.Scene();
     scene.background = new THREE.Color(0xffffff);
 
-    //const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 100);
     camera.position.set(0, 1, 2);
     scene.add(camera);
 
