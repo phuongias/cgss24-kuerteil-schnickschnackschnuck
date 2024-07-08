@@ -1,7 +1,7 @@
 .DS_Store
 *.swp
 .project
-.idea/
+../.idea/
 .vscode/
 npm-debug.log
 .jshintrc
@@ -16,5 +16,5 @@ test/e2e/chromium
 test/e2e/output-screenshots
 assets/tom/blenderfiles_tom/deprecated
 
-**/node_modules
+three.js-master/node_modules
 three.js-master/*
