@@ -47,7 +47,7 @@ class Spieler {
     //Methode zum Laden der Handanimation
     //Quelle: https://youtu.be/yPA2z7fl4J8?si=F7DOcu4_3Tney-4F -> Load 3D Object from blender in Three.js
     //Quelle: https://youtu.be/GByT8ActvDk?si=C7BWX5MIsQl_UmwL -> Load Animation frm blender in Three.js
-    loadHandAnimation(path, animationName, handName, mixer, position, scale, rotation) {
+    loadAnimation(path, animationName, handName, mixer, position, scale, rotation) {
         const loader = new THREE.GLTFLoader();
         loader.load(path, (glb) => {
             console.log(glb);
@@ -71,7 +71,7 @@ class Spieler {
     }
 
     //Methode um Default Stein Movement zu löschen, um andere Aktion auszuführen
-    removeHandAnimation() {
+    removeAnimation() {
         if (this.handName) {
             scene.remove(this.handName);
             this.handName = null;
@@ -94,61 +94,61 @@ class Spieler {
 //default Faust Animation
 function loadDefaultAnimation() {
     //links
-    spieler1.loadHandAnimation('assets/tom/main_mirror_schnickschnack.glb', 'faust',
+    spieler1.loadAnimation('assets/tom/main_mirror_schnickschnack.glb', 'faust',
         'handRockDefault1', mixer2,
         [-5, 0, -3.5], //-5, 0, -2
         [0.1, 0.11, 0.1],
-        [0,0,0]);
+        [0, 0, 0]);
 
     //rechts
-    spieler2.loadHandAnimation('assets/tom/main_schnickschnack.glb', 'faust',
+    spieler2.loadAnimation('assets/tom/main_schnickschnack.glb', 'faust',
         'handRockDefault2', mixer2,
         [5, 0.1, -3.4], //5, 0.1, -3.4
         [0.1, 0.11, 0.1],
-        [0,-0.9,0]);
+        [0, -0.9, 0]);
 
 
-    background1.loadHandAnimation('assets/tom/schnick.glb', 'schnick',
+    background1.loadAnimation('assets/tom/schnick.glb', 'schnick',
         'schnickpick', mixer,
         [0, 0.1, -1],
         [0.1, 0.11, 0.1],
-        [0,0,0])
+        [0, 0, 0])
 
-    background2.loadHandAnimation('assets/tom/schnack.glb', 'schnack',
+    background2.loadAnimation('assets/tom/schnack.glb', 'schnack',
         'schnickpick', mixer,
         [0, 0.1, -2],
         [0.1, 0.11, 0.1],
-        [0,0,0])
+        [0, 0, 0])
 
-    background3.loadHandAnimation('assets/tom/only_schnuck_placeholder.glb', 'schnuck2',
+    background3.loadAnimation('assets/tom/only_schnuck_placeholder.glb', 'schnuck2',
         'schnickpick', mixer,
         [5, 0.1, -200],
         [0.1, 0.11, 0.1],
-        [0,0,0])
-
+        [0, 0, 0])
 
 
 }
+
 
 
 //Methode um Stein, Papier oder Schere auszuführen
 function makeActions() {
     if (spieler1Choice && spieler2Choice) {//wenn beide Spieler gedrückt haben
 
-        spieler1.removeHandAnimation();
-        findOutcome(); //resultat anzeigen TODO: globale Animationsnamen ändern, um "Gewinneranimationen" zu zeigen?
+        spieler1.removeAnimation();
+        //findOutcome(); //resultat anzeigen TODO: globale Animationsnamen ändern, um "Gewinneranimationen" zu zeigen?
 
         switch (spieler1Choice) {
             //Spieler 1
             case 'q':
-                spieler1.loadHandAnimation('assets/tom/schere_final.glb', 'schere',
+                spieler1.loadAnimation('assets/tom/schere_final.glb', 'schere',
                     'handRock', mixer,
                     [-4.5, 0, -2],
                     [0.1, 0.11, 0.1],
                     [0, 0, -20]);
                 break;
             case 'w':
-                spieler1.loadHandAnimation('assets/tom/stein_final.glb', 'stein',
+                spieler1.loadAnimation('assets/tom/stein_final.glb', 'stein',
                     'handRockDefault1', mixer,
                     [-4.5, 0, -2],
                     [0.1, 0.11, 0.1],
@@ -156,7 +156,7 @@ function makeActions() {
                 break;
 
             case 'e':
-                spieler1.loadHandAnimation('assets/tom/papier_final.glb',
+                spieler1.loadAnimation('assets/tom/papier_final.glb',
                     'HandWave', 'papier', mixer,
                     [-4.5, 0, -2], [0.1, 0.11, 0.1], [0, 0, -20]);
                 break;
@@ -168,19 +168,19 @@ function makeActions() {
 
         switch (spieler2Choice) {
             case 'i':
-                spieler2.loadHandAnimation('assets/tom/schere_final.glb', 'schere',
+                spieler2.loadAnimation('assets/tom/schere_final.glb', 'schere',
                     'scissorsHand', mixer2,
                     [4.5, 0, -2], [0.1, 0.11, 0.1], [0, Math.PI, -20]);
                 break;
 
             case 'o':
-                spieler2.loadHandAnimation('assets/tom/stein_final.glb', 'stein',
+                spieler2.loadAnimation('assets/tom/stein_final.glb', 'stein',
                     'handRockDefault2', mixer2,
                     [4.5, 0, -2], [0.1, 0.11, 0.1], [0, Math.PI, -20]);
                 break;
 
             case 'p':
-                spieler2.loadHandAnimation('assets/tom/papier_final.glb', 'papier',
+                spieler2.loadAnimation('assets/tom/papier_final.glb', 'papier',
                     'handWave', mixer2,
                     [4.5, 0, -2], [0.1, 0.11, 0.1], [0, 0, 20]);
                 break;
@@ -192,11 +192,11 @@ function makeActions() {
 }
 
 function loadSchnuckAnimation() {
-    background1.removeHandAnimation();
-    background2.removeHandAnimation();
+    background1.removeAnimation();
+    background2.removeAnimation();
     //spieler1.removeHandAnimation();
     //spieler2.removeHandAnimation();
-    background3.loadHandAnimation('assets/tom/only_schnuck.glb', 'schnuck',
+    background3.loadAnimation('assets/tom/only_schnuck.glb', 'schnuck',
         'schnickpick', mixer2,
         [0, 0.1, -3.4],
         [0.2, 0.11, 0.1],//0.15, 0.15, 0.15
@@ -209,7 +209,6 @@ function loadSchnuckAnimation() {
 //Quelle: https://stackoverflow.com/questions/74297160/stop-countdown-timer-at-0
 //Quelle: https://stackoverflow.com/questions/31106189/create-a-simple-10-second-countdown
 function startCountdown() {
-    //var elem = document.getElementById('countdownHTML');
     loadSchnuckAnimation();
     let countdown = 1; //Countdowndauer
     let countdownInterval = null;
@@ -217,6 +216,7 @@ function startCountdown() {
         if (countdown <= 0) {
             clearInterval(countdownInterval);
             if (spieler1Choice && spieler2Choice) {
+                findOutCome();
                 makeActions();
 
             } else {
@@ -224,7 +224,6 @@ function startCountdown() {
             }
         } else {
             countdown--;
-            //Countdown in HTML anzeigen -> funktioniert noch nicht lol -> muss noch in html datei
 
         }
     }, 100);
