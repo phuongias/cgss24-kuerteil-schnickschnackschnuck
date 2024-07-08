@@ -1,6 +1,4 @@
-/*const canvas = document.querySelector(".webgl");
-const scene = new THREE.Scene();
-scene.background = new THREE.Color(0xffffff);*/
+
 // Quellen: shaders -> sparkles: https://www.shadertoy.com/results?query=sparkles
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -17,6 +15,7 @@ const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerH
 const canvas = document.querySelector(".webgl");
 const renderer = new THREE.WebGLRenderer({canvas: canvas});
 const light = new THREE.DirectionalLight(0xffffff, 1);
+const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
 
 let spieler1 = null;
 let spieler2 = null;
@@ -28,6 +27,7 @@ let background3 = null;
 let spieler1Choice = null;
 let spieler2Choice = null;
 
+let currentResultTextMesh = null;
 
 //Spieler kann nur einmal Schere Stein oder Papier ausführen -> nicht mehr notwendig
 // da spieler bis zum countdown mehrfach drücken kann
@@ -70,7 +70,7 @@ class Spieler {
         });
     }
 
-    //Methode um Default Stein Movement zu löschen, um andere Aktion auszuführen
+    //Methode um Animationen entfernen zu können -> zb bei default Animation
     removeAnimation() {
         if (this.handName) {
             scene.remove(this.handName);
@@ -240,27 +240,40 @@ function checkCountdown() {
 //Quelle: https://www.youtube.com/watch?v=IA3HjAV2nzU
 //Quelle: https://threejs.org/docs/#examples/en/loaders/FontLoader
 function showResult(text) {
+    removeCurrentResult();
     const fontLoader = new THREE.FontLoader();
     fontLoader.load('assets/fonts/regularDay.json', (font) => {
         const textGeometry = new THREE.TextGeometry(text, {
             font: font,
-            size: 0.1,
-            height: 0.1,
-            curveSegments: 12,
+            size: 0.35,
+            //Tiefe des Textes -> Text hat keine Tiefe bei 0 (für 2D in 3D Szene)
+            height: 0,
+            //Anzahl der Kurvensegmente -> je höher desto glattere Kurven
+            curveSegments: 1,
         })
 
         //testMesh ist der Text der angezeigt werden soll
         const textMesh = new THREE.Mesh(textGeometry,
-            [new THREE.MeshPhongMaterial({color: 'red'}), //front
-                new THREE.MeshPhongMaterial({color: 'red'}) //side
+            [new THREE.MeshPhongMaterial({color: 'black'}) //front
             ])
 
-        textMesh.castShadow = true;
-        textMesh.position.set(-2, 0, -2);
+        textMesh.castShadow = true; //schatten
+        textMesh.position.set(-2.35, 3, -1.3);
         textMesh.rotation.y = 0;
         scene.add(textMesh);
 
+        currentResultTextMesh = textMesh;
+
     });
+}
+
+//Funktion, um Result zu löschen, für nächstes Spiel
+function removeCurrentResult() {
+    if (currentResultTextMesh) {
+        scene.remove(currentResultTextMesh);
+        currentResultTextMesh = null;
+    }
+
 }
 
 
@@ -272,55 +285,55 @@ function findOutCome() {
         if (spieler1Choice === 'q' && spieler2Choice === 'i') {
             //Schere vs Schere
             console.log('Unentschieden: Schere');
-            resultMessage = 'Unentschieden: Schere';
+            resultMessage = '  Unentschieden:\n beide haben Schere';
 
 
         } else if (spieler1Choice === 'w' && spieler2Choice === 'o') {
             //Stein vs Stein
             console.log('Unentschieden: beide Stein');
-            resultMessage = 'Unentschieden: beide Stein';
+            resultMessage = '  Unentschieden:\n beide haben Stein';
 
 
         } else if (spieler1Choice === 'e' && spieler2Choice === 'p') {
             //Paper vs Papier
             console.log('Unentschieden: beide Papier');
-            resultMessage = 'Unentschieden: beide Papier';
+            resultMessage = ' Unentschieden:\n beide haben Papier';
 
 
         } else if (spieler1Choice === 'q' && spieler2Choice === 'o') {
             //Spieler 1: SCHERE vs. Spieler 2: STEIN
             console.log('Spieler 2 gewinnt: Stein schlägt Schere');
-            resultMessage = 'Spieler 2 gewinnt: Stein schlägt Schere';
+            resultMessage = '  Spieler 2 gewinnt:\n  Stein schlägt Schere';
 
 
         } else if (spieler1Choice === 'q' && spieler2Choice === 'p') {
             //Spieler 1: SCHERE vs. Spieler 2: PAPIER
-            console.log('Spieler 1 gewinnt: Schere schneidet Papier');
-            resultMessage = 'Spieler 1 gewinnt: Schere schneidet Papier';
+            console.log(' Spieler 1 gewinnt: Schere schneidet Papier');
+            resultMessage = ' Spieler 1 gewinnt:\nSchere schneidet Papier';
 
 
         } else if (spieler1Choice === 'w' && spieler2Choice === 'i') {
             //Spieler 1: STEIN vs. Spieler 2: SCHERE
             console.log('Spieler 1 gewinnt: Stein schlägt Schere');
-            resultMessage = 'Spieler 1 gewinnt: Stein schlägt Schere';
+            resultMessage = ' Spieler 1 gewinnt:\nStein schlägt Schere';
 
 
         } else if (spieler1Choice === 'w' && spieler2Choice === 'p') {
             //Spieler 1: STEIN vs. Spieler 2: SCHERE
             console.log('Spieler 2 gewinnt: Papier umhüllt Stein');
-            resultMessage = 'Spieler 2 gewinnt: Papier umhüllt Stein';
+            resultMessage = ' Spieler 2 gewinnt:\nPapier umhüllt Stein';
 
 
         } else if (spieler1Choice === 'e' && spieler2Choice === 'i') {
             //Spieler 1: PAPIER vs. Spieler 2: SCHERE
             console.log('Spieler 2 gewinnt: Schere schneidet Papier');
-            resultMessage = 'Spieler 2 gewinnt: Schere schneidet Papier';
+            resultMessage = ' Spieler 2 gewinnt:\nSchere schneidet Papier';
 
 
         } else if (spieler1Choice === 'e' && spieler2Choice === 'o') {
             //Spieler 1: PAPIER vs. Spieler 2: STEIN
             console.log('Spieler 1 gewinnt: Papier umhüllt Stein');
-            resultMessage = 'Spieler 1 gewinnt: Papier umhüllt Stein';
+            resultMessage = ' Spieler 1 gewinnt:\nPapier umhüllt Stein';
 
         }
         showResult(resultMessage)
@@ -337,23 +350,23 @@ function init() {
     background1 = new Spieler("awdawd");
     background2 = new Spieler("awdawd");
     background3 = new Spieler("awdawd");
+
+    //Hintergrundfarbe/bild
     scene.background = new THREE.Color(0xffffff);
 
+    //Kamera
     camera.position.set(0, 1, 2);
     scene.add(camera);
 
-    //const renderer = new THREE.WebGLRenderer({ canvas: canvas });
+    //WebGL Renderer
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.shadowMap.enabled = true;
     renderer.gammaOutput = true;
 
-    //Lighting
+    //Licht
     light.position.set(2, 2, 5);
     scene.add(light);
-
-    //Licht
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
     scene.add(directionalLight);
 
     //zuerst wird faust angezeigt
@@ -397,10 +410,16 @@ function animate() {
     requestAnimationFrame(animate);
     const delta = clock.getDelta();
 
-    background1.mixer.update(delta);
+    if(background1 && background1.mixer) {
+        background1.mixer.update(delta);
+    }
+    if(background2 && background2.mixer) {
     background2.mixer.update(delta);
-    background3.mixer.update(delta);
+    }
 
+    if(background3 && background3.mixer) {
+        background3.mixer.update(delta);
+    }
 
     if (spieler1 && spieler1.mixer) {
         spieler1.mixer.update(delta);
