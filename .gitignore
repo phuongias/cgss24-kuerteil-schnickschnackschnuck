@@ -1,7 +1,7 @@
 .DS_Store
 *.swp
 .project
-.idea/
+../.idea/
 .vscode/
 npm-debug.log
 .jshintrc
@@ -15,5 +15,5 @@ test/treeshake/stats.html
 test/e2e/chromium
 test/e2e/output-screenshots
 
-**/node_modules
+three.js-master/node_modules
 three.js-master/*
