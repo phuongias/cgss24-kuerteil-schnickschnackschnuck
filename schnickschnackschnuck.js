@@ -194,6 +194,8 @@ function makeActions() {
 function loadSchnuckAnimation() {
     background1.removeHandAnimation();
     background2.removeHandAnimation();
+    //spieler1.removeHandAnimation();
+    //spieler2.removeHandAnimation();
     background3.loadHandAnimation('assets/tom/only_schnuck.glb', 'schnuck',
         'schnickpick', mixer2,
         [0, 0.1, -3.4],
