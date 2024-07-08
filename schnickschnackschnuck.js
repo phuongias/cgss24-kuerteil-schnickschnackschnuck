@@ -141,24 +141,24 @@ function makeActions() {
         switch (spieler1Choice) {
             //Spieler 1
             case 'q':
-                spieler1.loadHandAnimation('assets/tom/schere_final.glb', 'schere',
-                    'handRock', mixer,
-                    [-4.5, 0, -2],
+                spieler1.loadHandAnimation('assets/tom/neu/schereSpieler1.glb', 'schere',
+                    'schere1', mixer,
+                    [-5, 0, -3.5], //-5, 0, -2
                     [0.1, 0.11, 0.1],
-                    [0, 0, -20]);
+                    [0,0,0]);
                 break;
             case 'w':
-                spieler1.loadHandAnimation('assets/tom/stein_final.glb', 'stein',
+                spieler1.loadHandAnimation('assets/tom/neu/steinSpieler1.glb', 'stein',
                     'handRockDefault1', mixer,
-                    [-4.5, 0, -2],
+                    [-5, 0, -3.5], //-5, 0, -2
                     [0.1, 0.11, 0.1],
-                    [0, 0, -20]);
+                    [0,0,0]);
                 break;
 
             case 'e':
-                spieler1.loadHandAnimation('assets/tom/papier_final.glb',
-                    'HandWave', 'papier', mixer,
-                    [-4.5, 0, -2], [0.1, 0.11, 0.1], [0, 0, -20]);
+                spieler1.loadHandAnimation('assets/tom/neu/blattSpieler1.glb',
+                    'papier', 'HandWave', mixer,
+                    [-4.5, 0, -2], [0.1, 0.11, 0.1], [0, 0, 0]);
                 break;
 
 
@@ -174,14 +174,14 @@ function makeActions() {
                 break;
 
             case 'o':
-                spieler2.loadHandAnimation('assets/tom/stein_final.glb', 'stein',
+                spieler2.loadHandAnimation('assets/tom/stein.glb', 'stein',
                     'handRockDefault2', mixer2,
-                    [4.5, 0, -2], [0.1, 0.11, 0.1], [0, Math.PI, -20]);
+                    [4.5, 0, 0], [0.1, 0.11, 0.1], [-0.2, -2.3, -0.4]);
                 break;
 
             case 'p':
                 spieler2.loadHandAnimation('assets/tom/papier_final.glb', 'papier',
-                    'handWave', mixer2,
+                    'HandWave', mixer2,
                     [4.5, 0, -2], [0.1, 0.11, 0.1], [0, 0, 20]);
                 break;
         }
@@ -198,7 +198,7 @@ function loadSchnuckAnimation() {
     //spieler2.removeHandAnimation();
     background3.loadHandAnimation('assets/tom/only_schnuck.glb', 'schnuck',
         'schnickpick', mixer2,
-        [0, 0.1, -3.4],
+        [0, 0.1, -6.5],
         [0.2, 0.11, 0.1],//0.15, 0.15, 0.15
         [0,0,0])
     //background3.mixer.update(delta);
