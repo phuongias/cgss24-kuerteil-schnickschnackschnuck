@@ -1,13 +1,11 @@
 .container {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
+    width: 50%;
     text-align: center;
 }
 
 h1 {
-    font-size: 40px;
+    font-size: 20px;
     color: #ff6387;
     font-weight: bold;
     margin: 0;
