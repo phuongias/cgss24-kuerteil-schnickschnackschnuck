@@ -1,0 +1,21 @@
+.container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+}
+
+h1 {
+    font-size: 40px;
+    color: #ff6387;
+    font-weight: bold;
+    margin: 0;
+}
+
+.gameResult { /*Anezeige der Ergebnisse oben*/
+    font-size: 40px;
+    text-align: center;
+    color: #00bb00;
+
+}
