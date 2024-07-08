@@ -136,6 +136,8 @@ function makeActions() {
     if (spieler1Choice && spieler2Choice) {//wenn beide Spieler gedrückt haben
 
         spieler1.removeHandAnimation();
+        findOutcome(); //resultat anzeigen TODO: globale Animationsnamen ändern, um "Gewinneranimationen" zu zeigen?
+
         switch (spieler1Choice) {
             //Spieler 1
             case 'q':
@@ -161,9 +163,9 @@ function makeActions() {
 
 
         }
-
         //Spieler 2
         spieler2.removeHandAnimation();//default Stein entfernen
+
         switch (spieler2Choice) {
             case 'i':
                 spieler2.loadHandAnimation('assets/tom/schere_final.glb', 'schere',
@@ -183,8 +185,6 @@ function makeActions() {
                     [4.5, 0, -2], [0.1, 0.11, 0.1], [0, 0, 20]);
                 break;
         }
-
-        findOutcome(); //resultat anzeigen
     }
     spieler1Choice = null;
     spieler2Choice = null;
@@ -211,7 +211,7 @@ function loadSchnuckAnimation() {
 function startCountdown() {
     //var elem = document.getElementById('countdownHTML');
     loadSchnuckAnimation();
-    let countdown = 3; //Countdowndauer
+    let countdown = 1; //Countdowndauer
     let countdownInterval = null;
     countdownInterval = setInterval(() => {
         if (countdown <= 0) {
@@ -227,7 +227,7 @@ function startCountdown() {
             //Countdown in HTML anzeigen -> funktioniert noch nicht lol -> muss noch in html datei
 
         }
-    }, 980);
+    }, 100);
 }
 
 //Funktion um Countdown zu überprüfen, ob beide Spieler gewählt haben
