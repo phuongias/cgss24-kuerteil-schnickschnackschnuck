@@ -4,12 +4,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Schnick Schnack Schnuck</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<div class = "container"> <!-- Anzeige der Results-->
-    <h1>Schnickt Schnackt Schnuckt!:)</h1>
-    <div id = "gameResult" > </div>
-</div>
+        <h1>Schnickt Schnackt <br>   Schnuckt miteinander!:)</h1>
+
+
+<!-- Score Anzeige für den Punktestand-->
+<table class="table" >
+    <thead>
+        <tr>
+            <th>Spieler</th>
+            <th>Punkte</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <tr>
+            <td id="spieler1">Spieler 1</td>
+            <td id="spieler1score">0</td>
+        </tr>
+        <tr>
+            <td id="spieler2">Spieler 2</td>
+            <td id="spieler2score">Spieler 20
+        </tr>
+    </tbody>
+</table>
+
 
     <canvas class="webgl"></canvas>
     <script type="text/javascript" charset="UTF-8" src="./libs/three/three.js"></script>
