@@ -19,6 +19,8 @@ const canvas = document.querySelector(".webgl");
 const renderer = new THREE.WebGLRenderer({canvas: canvas});
 const light = new THREE.DirectionalLight(0xffffff, 1);
 const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+const fontLoader = new THREE.FontLoader();
+
 
 let spieler1 = null;
 let spieler2 = null;
@@ -30,7 +32,11 @@ let background3 = null;
 let spieler1Choice = null;
 let spieler2Choice = null;
 
+let spieler1score = 0;
+let spieler2score = 0;
+
 let currentResultTextMesh = null;
+
 
 //Spieler kann nur einmal Schere Stein oder Papier ausführen -> nicht mehr notwendig
 // da spieler bis zum countdown mehrfach drücken kann
@@ -39,7 +45,8 @@ let spieler2ActionExecuted = false;*/
 
 
 //Spieler Klasse
-class Spieler {
+class DreiDObjekt{
+    countdown = new Countdown();
     constructor(name) {
         this.name = name;
         this.mixer = null;
@@ -82,20 +89,24 @@ class Spieler {
     }
 
     //Funktion, um Aktionswahl zu speichern
+
     choosesActionPlayer1(choice) {
         spieler1Choice = choice;
-        checkCountdown();
+        this.countdown.checkCountdown();
     }
 
     choosesActionPlayer2(choice) {
         spieler2Choice = choice;
-        checkCountdown();
+        this.countdown.checkCountdown();
     }
 }
 
 
+
+
 //default Faust Animation
 function loadDefaultAnimation() {
+
     //links
     spieler1.loadAnimation('assets/tom/main_mirror_schnickschnack.glb', 'faust',
         'handRockDefault1', mixer2,
@@ -206,75 +217,105 @@ function loadSchnuckAnimation() {
     //background3.mixer.update(delta);
 }
 
+class Countdown {
 //Countdown -Code
 //Quelle: https://stackoverflow.com/questions/31106189/create-a-simple-10-second-countdown
 //Quelle: https://stackoverflow.com/questions/74297160/stop-countdown-timer-at-0
 //Quelle: https://stackoverflow.com/questions/31106189/create-a-simple-10-second-countdown
-function startCountdown() {
-    loadSchnuckAnimation();
-    let countdown = 1; //Countdowndauer
-    let countdownInterval = null;
-    countdownInterval = setInterval(() => {
-        if (countdown <= 0) {
-            clearInterval(countdownInterval);
-            if (spieler1Choice && spieler2Choice) {
-                findOutCome();
-                makeActions();
+    startCountdown() {
+        loadSchnuckAnimation();
+        let countdown = 1; //Countdowndauer
+        let countdownInterval = null;
+        countdownInterval = setInterval(() => {
+            if (countdown <= 0) {
+                clearInterval(countdownInterval);
+                if (spieler1Choice && spieler2Choice) {
+                    findOutCome();
+                    makeActions();
 
+                } else {
+                    this.startCountdown();
+                }
             } else {
-                startCountdown();
-            }
-        } else {
-            countdown--;
+                countdown--;
 
-        }
-    }, 100);
-}
+            }
+        }, 100);
+    }
 
 //Funktion um Countdown zu überprüfen, ob beide Spieler gewählt haben
-function checkCountdown() {
-    if (spieler1Choice && spieler2Choice) {
-        startCountdown();
+
+    checkCountdown() {
+        if (spieler1Choice && spieler2Choice) {
+            this.startCountdown();
+        }
+    }
+}
+
+class Result {
+//Funktion um Ergebnis anzuzeigen mit FontLoader
+//Quelle: https://www.youtube.com/watch?v=IA3HjAV2nzU
+//Quelle: https://threejs.org/docs/#examples/en/loaders/FontLoader
+    constructor() {
+    }
+
+    showResult(text) {
+        this.removeCurrentResult();
+        fontLoader.load('assets/fonts/regularDay.json', (font) => {
+            const textGeometry = new THREE.TextGeometry(text, {
+                font: font,
+                size: 0.35,
+                //Tiefe des Textes -> Text hat keine Tiefe bei 0 (für 2D in 3D Szene)
+                height: 0,
+                //Anzahl der Kurvensegmente -> je höher desto glattere Kurven
+                curveSegments: 1,
+            })
+
+
+            const textMesh = new THREE.Mesh(textGeometry,
+                [new THREE.MeshPhongMaterial({color: 'black'}) //front
+                ])
+
+            textMesh.castShadow = true; //schatten
+            textMesh.position.set(-2.35, 3, -1.3);
+            textMesh.rotation.y = 0;
+            scene.add(textMesh);
+
+            currentResultTextMesh = textMesh;
+
+        });
+    }
+
+    //Funktion, um Result zu löschen, für nächstes Spiel
+    removeCurrentResult() {
+        if (currentResultTextMesh) {
+            scene.remove(currentResultTextMesh);
+            currentResultTextMesh = null;
+        }
     }
 }
 
 
-//Funktion um Ergebnis anzuzeigen mit FontLoader
-//Quelle: https://www.youtube.com/watch?v=IA3HjAV2nzU
-//Quelle: https://threejs.org/docs/#examples/en/loaders/FontLoader
-function showResult(text) {
-    removeCurrentResult();
-    const fontLoader = new THREE.FontLoader();
-    fontLoader.load('assets/fonts/regularDay.json', (font) => {
-        const textGeometry = new THREE.TextGeometry(text, {
-            font: font,
-            size: 0.35,
-            //Tiefe des Textes -> Text hat keine Tiefe bei 0 (für 2D in 3D Szene)
-            height: 0,
-            //Anzahl der Kurvensegmente -> je höher desto glattere Kurven
-            curveSegments: 1,
-        })
+//Score Klasse, um Punkte anzuzeigen -> showScore allerdings nicht genutzt
+class Score{
+    constructor() {
+    }
 
-        //testMesh ist der Text der angezeigt werden soll
-        const textMesh = new THREE.Mesh(textGeometry,
-            [new THREE.MeshPhongMaterial({color: 'black'}) //front
-            ])
+    updateScoreDisplay() {
+        document.getElementById('spieler1score').textContent = spieler1score;
+        document.getElementById('spieler2score').textContent =  spieler2score;
+    }
 
-        textMesh.castShadow = true; //schatten
-        textMesh.position.set(-2.35, 3, -1.3);
-        textMesh.rotation.y = 0;
-        scene.add(textMesh);
+    addScorePlayer1(){
+        spieler1score++;
+        console.log('Punkte Spieler1 :' + spieler1score);
+        this.updateScoreDisplay();
+    }
 
-        currentResultTextMesh = textMesh;
-
-    });
-}
-
-//Funktion, um Result zu löschen, für nächstes Spiel
-function removeCurrentResult() {
-    if (currentResultTextMesh) {
-        scene.remove(currentResultTextMesh);
-        currentResultTextMesh = null;
+    addScorePlayer2(){
+        spieler2score++;
+        console.log('Punkte Spieler2 :' + spieler2score);
+        this.updateScoreDisplay();
     }
 
 }
@@ -282,6 +323,8 @@ function removeCurrentResult() {
 
 //Funktion um Ergebnis zu finden
 function findOutCome() {
+    const score = new Score();
+    const result = new Result();
     let resultMessage = '';
     if (spieler1Choice && spieler2Choice) {
 
@@ -291,10 +334,12 @@ function findOutCome() {
             resultMessage = '  Unentschieden:\n beide haben Schere';
 
 
+
         } else if (spieler1Choice === 'w' && spieler2Choice === 'o') {
             //Stein vs Stein
             console.log('Unentschieden: beide Stein');
             resultMessage = '  Unentschieden:\n beide haben Stein';
+
 
 
         } else if (spieler1Choice === 'e' && spieler2Choice === 'p') {
@@ -307,47 +352,58 @@ function findOutCome() {
             //Spieler 1: SCHERE vs. Spieler 2: STEIN
             console.log('Spieler 2 gewinnt: Stein schlägt Schere');
             resultMessage = '  Spieler 2 gewinnt:\n  Stein schlägt Schere';
+            score.addScorePlayer2();
 
 
         } else if (spieler1Choice === 'q' && spieler2Choice === 'p') {
             //Spieler 1: SCHERE vs. Spieler 2: PAPIER
             console.log(' Spieler 1 gewinnt: Schere schneidet Papier');
             resultMessage = ' Spieler 1 gewinnt:\nSchere schneidet Papier';
+            score.addScorePlayer1();
 
 
         } else if (spieler1Choice === 'w' && spieler2Choice === 'i') {
             //Spieler 1: STEIN vs. Spieler 2: SCHERE
             console.log('Spieler 1 gewinnt: Stein schlägt Schere');
             resultMessage = ' Spieler 1 gewinnt:\nStein schlägt Schere';
+            score.addScorePlayer1();
 
 
         } else if (spieler1Choice === 'w' && spieler2Choice === 'p') {
             //Spieler 1: STEIN vs. Spieler 2: SCHERE
             console.log('Spieler 2 gewinnt: Papier umhüllt Stein');
             resultMessage = ' Spieler 2 gewinnt:\nPapier umhüllt Stein';
+            score.addScorePlayer2();
+
 
 
         } else if (spieler1Choice === 'e' && spieler2Choice === 'i') {
             //Spieler 1: PAPIER vs. Spieler 2: SCHERE
             console.log('Spieler 2 gewinnt: Schere schneidet Papier');
             resultMessage = ' Spieler 2 gewinnt:\nSchere schneidet Papier';
+            score.addScorePlayer2();
+
 
 
         } else if (spieler1Choice === 'e' && spieler2Choice === 'o') {
             //Spieler 1: PAPIER vs. Spieler 2: STEIN
             console.log('Spieler 1 gewinnt: Papier umhüllt Stein');
             resultMessage = ' Spieler 1 gewinnt:\nPapier umhüllt Stein';
+            score.addScorePlayer1();
+
 
         }
-        showResult(resultMessage)
+        result.showResult(resultMessage)
 
 
     }
 }
 
 
+
+
 //Quelle: https://stackoverflow.com/questions/20290402/three-js-resizing-canvas
-//Fenster scaable machen
+//Fenster scalable machen
 function onWindowResize(){
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
@@ -356,19 +412,20 @@ function onWindowResize(){
 
 
 function init() {
-    spieler1 = new Spieler("Spieler 1 / links");
-    spieler2 = new Spieler("Spieler 2 / rechts");
-    spieler3 = new Spieler("Spieler 2 / rechts");
-    background1 = new Spieler("awdawd");
-    background2 = new Spieler("awdawd");
-    background3 = new Spieler("awdawd");
-
+    spieler1 = new DreiDObjekt("Spieler 1 / links");
+    spieler2 = new DreiDObjekt("Spieler 2 / rechts");
+    spieler3 = new DreiDObjekt("Spieler 2 / rechts");
+    background1 = new DreiDObjekt("awdawd");
+    background2 = new DreiDObjekt("awdawd");
+    background3 = new DreiDObjekt("awdawd");
+    let score = new Score();
     //Hintergrundfarbe/bild
     scene.background = new THREE.Color(0xffffff);
 
     //Kamera
     camera.position.set(0, 1, 2);
     scene.add(camera);
+
 
     //WebGL Renderer
     renderer.setSize(window.innerWidth, window.innerHeight);
@@ -383,6 +440,8 @@ function init() {
 
     //zuerst wird faust angezeigt
     loadDefaultAnimation();
+    score.updateScoreDisplay();
+
 
 
     //Event listener für Keyboard Input
@@ -413,12 +472,12 @@ function init() {
             spieler2.choosesActionPlayer2('p');
         }
 
-
     });
 }
 
 //Animation loop
 function animate() {
+
     requestAnimationFrame(animate);
     const delta = clock.getDelta();
 
@@ -441,6 +500,8 @@ function animate() {
         spieler2.mixer.update(delta);
 
     }
+
+
     renderer.render(scene, camera);
 
 }

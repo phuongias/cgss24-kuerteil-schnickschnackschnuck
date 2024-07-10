@@ -5,15 +5,34 @@
 }
 
 h1 {
-    font-size: 20px;
-    color: #ff6387;
+    font-size: 40px;
+    color: #ff638d;
     font-weight: bold;
-    margin: 0;
+    font-family: 'Roboto Mono', monospace;
+    left: 15px;
+    top: 15px;
 }
 
-.gameResult { /*Anezeige der Ergebnisse oben*/
-    font-size: 40px;
-    text-align: center;
-    color: #00bb00;
+.table {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    width: 20%;
+    margin: 0 auto;
+    font-size: 24px;
+}
 
+/*table header*/
+.table th{
+    text-align: center;
+    color: #ff6387;
+    font-family: 'Roboto Mono', monospace;
+
+}
+
+/*table data*/
+.table td {
+    text-align: center;
+    color: #0a0a0b;
+    font-family: 'Roboto Mono', monospace;
 }
