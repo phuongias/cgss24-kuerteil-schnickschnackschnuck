@@ -2,9 +2,12 @@
 // Quellen: shaders -> sparkles: https://www.shadertoy.com/results?query=sparkles
 
 document.addEventListener('DOMContentLoaded', function () {
+    onWindowResize();
     init();
     animate();
 });
+
+window.addEventListener( 'resize', onWindowResize, false );
 
 let mixer = null;
 let mixer2 = null;
@@ -181,7 +184,7 @@ function makeActions() {
             case 'p':
                 spieler2.loadAnimation('assets/tom/papier_final.glb', 'papier',
                     'HandWave', mixer2,
-                    [4.5, 0, -2], [0.1, 0.11, 0.1], [0, 0, 20]);
+                    [4.5, 0, -3], [0.1, 0.11, 0.1], [0, 0, 20]);
                 break;
         }
     }
@@ -340,6 +343,15 @@ function findOutCome() {
 
 
     }
+}
+
+
+//Quelle: https://stackoverflow.com/questions/20290402/three-js-resizing-canvas
+//Fenster scaable machen
+function onWindowResize(){
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize( window.innerWidth, window.innerHeight );
 }
 
 
