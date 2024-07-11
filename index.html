@@ -7,30 +7,58 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-        <h1>Schnickt Schnackt <br>   Schnuckt miteinander!:)</h1>
-
-
-<!-- Score Anzeige für den Punktestand-->
-<table class="table" >
-    <thead>
+<div class="controls-container">
+    <table class="controls-table-spieler1">
+        <thead>
         <tr>
-            <th>Spieler</th>
-            <th>Punkte</th>
+            <th >Spieler 1 Controls</th>
         </tr>
-    </thead>
+        </thead>
 
-    <tbody>
+        <tbody>
         <tr>
-            <td id="spieler1">Spieler 1</td>
-            <td id="spieler1score">0</td>
+            <td>Schere</td>
+            <td>i</td>
         </tr>
-        <tr>
-            <td id="spieler2">Spieler 2</td>
-            <td id="spieler2score">Spieler 20
-        </tr>
-    </tbody>
-</table>
 
+        <tr>
+            <td>Stein</td>
+            <td>w</td>
+        </tr>
+
+        <tr>
+            <td>Papier</td>
+            <td>e</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <table class="controls-table-spieler2">
+        <thead>
+        <tr>
+            <th >Spieler 2 Controls</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr>
+            <td>Schere</td>
+            <td>i</td>
+        </tr>
+
+        <tr>
+            <td>Stein</td>
+            <td>o</td>
+        </tr>
+
+        <tr>
+            <td>Papier</td>
+            <td>p</td>
+        </tr>
+        </tbody>
+
+    </table>
+</div>
 
     <canvas class="webgl"></canvas>
     <script type="text/javascript" charset="UTF-8" src="./libs/three/three.js"></script>
@@ -40,6 +68,9 @@
     <!--<script type ="text/javascript" src="./libs/"></script>-->
 
     <script type = "module" src="schnickschnackschnuck.js"></script>
+
+    <div id = "spieler1score" > 0</div>
+    <div id = "spieler2score" > 0</div>
 
 
 </body>

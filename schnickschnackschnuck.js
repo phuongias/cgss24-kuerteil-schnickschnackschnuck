@@ -351,28 +351,28 @@ function findOutCome() {
         } else if (spieler1Choice === 'q' && spieler2Choice === 'o') {
             //Spieler 1: SCHERE vs. Spieler 2: STEIN
             console.log('Spieler 2 gewinnt: Stein schlägt Schere');
-            resultMessage = '  Spieler 2 gewinnt:\n  Stein schlägt Schere';
+            resultMessage = '  Spieler 2 gewinnt \n    mit Stein';
             score.addScorePlayer2();
 
 
         } else if (spieler1Choice === 'q' && spieler2Choice === 'p') {
             //Spieler 1: SCHERE vs. Spieler 2: PAPIER
             console.log(' Spieler 1 gewinnt: Schere schneidet Papier');
-            resultMessage = ' Spieler 1 gewinnt:\nSchere schneidet Papier';
+            resultMessage = ' Spieler 1 gewinnt \n   mit Schere';
             score.addScorePlayer1();
 
 
         } else if (spieler1Choice === 'w' && spieler2Choice === 'i') {
             //Spieler 1: STEIN vs. Spieler 2: SCHERE
             console.log('Spieler 1 gewinnt: Stein schlägt Schere');
-            resultMessage = ' Spieler 1 gewinnt:\nStein schlägt Schere';
+            resultMessage = ' Spieler 1 gewinnt \n   mit Stein';
             score.addScorePlayer1();
 
 
         } else if (spieler1Choice === 'w' && spieler2Choice === 'p') {
             //Spieler 1: STEIN vs. Spieler 2: SCHERE
             console.log('Spieler 2 gewinnt: Papier umhüllt Stein');
-            resultMessage = ' Spieler 2 gewinnt:\nPapier umhüllt Stein';
+            resultMessage = ' Spieler 2 gewinnt \n   mit Papier';
             score.addScorePlayer2();
 
 
@@ -380,7 +380,7 @@ function findOutCome() {
         } else if (spieler1Choice === 'e' && spieler2Choice === 'i') {
             //Spieler 1: PAPIER vs. Spieler 2: SCHERE
             console.log('Spieler 2 gewinnt: Schere schneidet Papier');
-            resultMessage = ' Spieler 2 gewinnt:\nSchere schneidet Papier';
+            resultMessage = ' Spieler 2 gewinnt \n   mit Schere';
             score.addScorePlayer2();
 
 
@@ -388,7 +388,7 @@ function findOutCome() {
         } else if (spieler1Choice === 'e' && spieler2Choice === 'o') {
             //Spieler 1: PAPIER vs. Spieler 2: STEIN
             console.log('Spieler 1 gewinnt: Papier umhüllt Stein');
-            resultMessage = ' Spieler 1 gewinnt:\nPapier umhüllt Stein';
+            resultMessage = ' Spieler 1 gewinnt \n   mit Papier';
             score.addScorePlayer1();
 
 
@@ -425,7 +425,6 @@ function init() {
     //Kamera
     camera.position.set(0, 1, 2);
     scene.add(camera);
-
 
     //WebGL Renderer
     renderer.setSize(window.innerWidth, window.innerHeight);
@@ -474,6 +473,9 @@ function init() {
 
     });
 }
+
+
+
 
 //Animation loop
 function animate() {
