@@ -1,4 +1,3 @@
-
 // Quellen: shaders -> sparkles: https://www.shadertoy.com/results?query=sparkles
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -7,10 +6,12 @@ document.addEventListener('DOMContentLoaded', function () {
     animate();
 });
 
-window.addEventListener( 'resize', onWindowResize, false );
+window.addEventListener('resize', onWindowResize, false);
 
 let mixer = null;
 let mixer2 = null;
+
+let isGameOver = false;
 
 const clock = new THREE.Clock();
 const scene = new THREE.Scene();
@@ -36,6 +37,8 @@ let spieler1score = 0;
 let spieler2score = 0;
 
 let currentResultTextMesh = null;
+let currentRestartTextMesh = null;
+
 
 
 //Spieler kann nur einmal Schere Stein oder Papier ausführen -> nicht mehr notwendig
@@ -45,8 +48,9 @@ let spieler2ActionExecuted = false;*/
 
 
 //Spieler Klasse
-class DreiDObjekt{
+class DreiDObjekt {
     countdown = new Countdown();
+
     constructor(name) {
         this.name = name;
         this.mixer = null;
@@ -102,8 +106,6 @@ class DreiDObjekt{
 }
 
 
-
-
 //default Faust Animation
 function loadDefaultAnimation() {
 
@@ -112,33 +114,33 @@ function loadDefaultAnimation() {
         'handRockDefault1', mixer2,
         [-5, 0, -3.5], //-5, 0, -2
         [0.1, 0.11, 0.1],
-        [0,0,0]);
+        [0, 0, 0]);
 
     //rechts
     spieler2.loadAnimation('assets/tom/main_schnickschnack.glb', 'faust',
         'handRockDefault2', mixer2,
         [5, 0.1, -3.4], //5, 0.1, -3.4
         [0.1, 0.11, 0.1],
-        [0,-0.9,0]);
+        [0, -0.9, 0]);
 
 
     background1.loadAnimation('assets/tom/schnick.glb', 'schnick',
         'schnickpick', mixer,
         [0, 0.1, -1],
         [0.1, 0.11, 0.1],
-        [0,0,0])
+        [0, 0, 0])
 
     background2.loadAnimation('assets/tom/schnack.glb', 'schnack',
         'schnickpick', mixer,
         [0, 0.1, -2],
         [0.1, 0.11, 0.1],
-        [0,0,0])
+        [0, 0, 0])
 
     background3.loadAnimation('assets/tom/only_schnuck_placeholder.glb', 'schnuck2',
         'schnickpick', mixer,
         [5, 0.1, -200],
         [0.1, 0.11, 0.1],
-        [0,0,0])
+        [0, 0, 0])
 
 
 }
@@ -158,14 +160,14 @@ function makeActions() {
                     'schere1', mixer,
                     [-5, 0, -3.5], //-5, 0, -2
                     [0.1, 0.11, 0.1],
-                    [0,0,0]);
+                    [0, 0, 0]);
                 break;
             case 'w':
                 spieler1.loadAnimation('assets/tom/neu/steinSpieler1.glb', 'stein',
                     'handRockDefault1', mixer,
                     [-5, 0, -3.5], //-5, 0, -2
                     [0.1, 0.11, 0.1],
-                    [0,0,0]);
+                    [0, 0, 0]);
                 break;
 
             case 'e':
@@ -207,13 +209,14 @@ function makeActions() {
 function loadSchnuckAnimation() {
     background1.removeAnimation();
     background2.removeAnimation();
+    background3.removeAnimation();
     //spieler1.removeAnimation();
     //spieler2.removeAnimation();
     background3.loadAnimation('assets/tom/only_schnuck.glb', 'schnuck',
         'schnickpick', mixer2,
         [0, 0.1, -6.5],
         [0.2, 0.11, 0.1],//0.15, 0.15, 0.15
-        [0,0,0])
+        [0, 0, 0])
     //background3.mixer.update(delta);
 }
 
@@ -244,7 +247,6 @@ class Countdown {
     }
 
 //Funktion um Countdown zu überprüfen, ob beide Spieler gewählt haben
-
     checkCountdown() {
         if (spieler1Choice && spieler2Choice) {
             this.startCountdown();
@@ -293,26 +295,58 @@ class Result {
             currentResultTextMesh = null;
         }
     }
+
+    //Funktion um Restart anzuzeigen
+    showRestartNotice(resetText) {
+        fontLoader.load('assets/fonts/regularDay.json', (font) => {
+            const textGeometry = new THREE.TextGeometry(resetText, {
+                font: font,
+                size: 0.2,
+                //Tiefe des Textes -> Text hat keine Tiefe bei 0 (für 2D in 3D Szene)
+                height: 0,
+                //Anzahl der Kurvensegmente -> je höher desto glattere Kurven
+                curveSegments: 1,
+            })
+
+            const textResetMesh = new THREE.Mesh(textGeometry,
+                [new THREE.MeshPhongMaterial({color: 'black'}) //front
+                ])
+
+            textResetMesh.castShadow = true; //schatten
+            textResetMesh.position.set(-2.35, 2, -1.3);
+            textResetMesh.rotation.y = 0;
+            scene.add(textResetMesh);
+
+            currentRestartTextMesh = textResetMesh;
+        });
+    }
+
+    removeRestartNotice() {
+        if (currentRestartTextMesh) {
+            scene.remove(currentRestartTextMesh);
+            currentRestartTextMesh = null;
+        }
+    }
 }
 
 
 //Score Klasse, um Punkte anzuzeigen -> showScore allerdings nicht genutzt
-class Score{
+class Score {
     constructor() {
     }
 
     updateScoreDisplay() {
         document.getElementById('spieler1score').textContent = spieler1score;
-        document.getElementById('spieler2score').textContent =  spieler2score;
+        document.getElementById('spieler2score').textContent = spieler2score;
     }
 
-    addScorePlayer1(){
+    addScorePlayer1() {
         spieler1score++;
         console.log('Punkte Spieler1 :' + spieler1score);
         this.updateScoreDisplay();
     }
 
-    addScorePlayer2(){
+    addScorePlayer2() {
         spieler2score++;
         console.log('Punkte Spieler2 :' + spieler2score);
         this.updateScoreDisplay();
@@ -321,11 +355,39 @@ class Score{
 }
 
 
+const result = new Result();
+const score = new Score();
+
+//Funktion, um Spiel zurückzusetzen
+function resetGame() {
+
+    spieler1.removeAnimation();
+    spieler2.removeAnimation();
+    background1.removeAnimation();
+    background2.removeAnimation();
+    background3.removeAnimation();
+
+    result.removeCurrentResult();
+    result.removeRestartNotice();
+
+    spieler1Choice = null;
+    spieler2Choice = null;
+
+    currentRestartTextMesh = null;
+    currentResultTextMesh = null;
+    isGameOver = false;
+
+
+    loadDefaultAnimation();
+
+}
+
+
 //Funktion um Ergebnis zu finden
 function findOutCome() {
-    const score = new Score();
-    const result = new Result();
     let resultMessage = '';
+
+
     if (spieler1Choice && spieler2Choice) {
 
         if (spieler1Choice === 'q' && spieler2Choice === 'i') {
@@ -334,12 +396,10 @@ function findOutCome() {
             resultMessage = '  Unentschieden:\n beide haben Schere';
 
 
-
         } else if (spieler1Choice === 'w' && spieler2Choice === 'o') {
             //Stein vs Stein
             console.log('Unentschieden: beide Stein');
             resultMessage = '  Unentschieden:\n beide haben Stein';
-
 
 
         } else if (spieler1Choice === 'e' && spieler2Choice === 'p') {
@@ -376,7 +436,6 @@ function findOutCome() {
             score.addScorePlayer2();
 
 
-
         } else if (spieler1Choice === 'e' && spieler2Choice === 'i') {
             //Spieler 1: PAPIER vs. Spieler 2: SCHERE
             console.log('Spieler 2 gewinnt: Schere schneidet Papier');
@@ -384,30 +443,27 @@ function findOutCome() {
             score.addScorePlayer2();
 
 
-
         } else if (spieler1Choice === 'e' && spieler2Choice === 'o') {
             //Spieler 1: PAPIER vs. Spieler 2: STEIN
             console.log('Spieler 1 gewinnt: Papier umhüllt Stein');
             resultMessage = ' Spieler 1 gewinnt \n   mit Papier';
             score.addScorePlayer1();
-
-
         }
-        result.showResult(resultMessage)
 
-
+        result.showResult(resultMessage);
+        result.showRestartNotice("Drücke M um noch eine Runde zu spielen :)");
+        isGameOver = true;
     }
+
 }
-
-
 
 
 //Quelle: https://stackoverflow.com/questions/20290402/three-js-resizing-canvas
 //Fenster scalable machen
-function onWindowResize(){
+function onWindowResize() {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
-    renderer.setSize( window.innerWidth, window.innerHeight );
+    renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
 
@@ -426,6 +482,7 @@ function init() {
     camera.position.set(0, 1, 2);
     scene.add(camera);
 
+
     //WebGL Renderer
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -442,39 +499,46 @@ function init() {
     score.updateScoreDisplay();
 
 
-
     //Event listener für Keyboard Input
     //Quelle: https://developer.mozilla.org/en-US/docs/Web/API/Element/keydown_event
     document.addEventListener('keydown', (event) => {
         const key = event.key.toLowerCase(); //taste wird abgespeichert
-        //Spieler 1
-        if (key === 'q') {
-            //Schere
-            spieler1.choosesActionPlayer1('q');
-        } else if (key === 'w') {
-            //Papier
-            spieler1.choosesActionPlayer1('w');
-        } else if (key === 'e') {
-            //Stein
-            spieler1.choosesActionPlayer1('e');
+
+        if(isGameOver) {
+            //Restart Game
+            if (key === 'm') {
+                resetGame();
+                isGameOver = false;
+            }
         }
 
-        //Spieler 2
-        if (key === 'i') {
-            //schere
-            spieler2.choosesActionPlayer2('i');
-        } else if (key === 'o') {
-            //stein
-            spieler2.choosesActionPlayer2('o');
-        } else if (key === 'p') {
-            //papier
-            spieler2.choosesActionPlayer2('p');
-        }
+            //Spieler 1
+            if (key === 'q') {
+                //Schere
+                spieler1.choosesActionPlayer1('q');
+            } else if (key === 'w') {
+                //Papier
+                spieler1.choosesActionPlayer1('w');
+            } else if (key === 'e') {
+                //Stein
+                spieler1.choosesActionPlayer1('e');
+            }
+
+            //Spieler 2
+            if (key === 'i') {
+                //schere
+                spieler2.choosesActionPlayer2('i');
+            } else if (key === 'o') {
+                //stein
+                spieler2.choosesActionPlayer2('o');
+            } else if (key === 'p') {
+                //papier
+                spieler2.choosesActionPlayer2('p');
+            }
+
 
     });
 }
-
-
 
 
 //Animation loop
@@ -483,14 +547,14 @@ function animate() {
     requestAnimationFrame(animate);
     const delta = clock.getDelta();
 
-    if(background1 && background1.mixer) {
+    if (background1 && background1.mixer) {
         background1.mixer.update(delta);
     }
-    if(background2 && background2.mixer) {
-    background2.mixer.update(delta);
+    if (background2 && background2.mixer) {
+        background2.mixer.update(delta);
     }
 
-    if(background3 && background3.mixer) {
+    if (background3 && background3.mixer) {
         background3.mixer.update(delta);
     }
 
