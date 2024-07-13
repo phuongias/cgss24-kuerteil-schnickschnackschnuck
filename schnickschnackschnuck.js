@@ -8,10 +8,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
 window.addEventListener('resize', onWindowResize, false);
 
+let isGameOver = false;
+
 let mixer = null;
 let mixer2 = null;
 
-let isGameOver = false;
 
 const clock = new THREE.Clock();
 const scene = new THREE.Scene();
@@ -38,7 +39,6 @@ let spieler2score = 0;
 
 let currentResultTextMesh = null;
 let currentRestartTextMesh = null;
-
 
 
 //Spieler kann nur einmal Schere Stein oder Papier ausführen -> nicht mehr notwendig
@@ -203,6 +203,8 @@ function makeActions() {
     }
     spieler1Choice = null;
     spieler2Choice = null;
+
+    isGameOver = true;
 
 }
 
@@ -375,6 +377,7 @@ function resetGame() {
 
     currentRestartTextMesh = null;
     currentResultTextMesh = null;
+
     isGameOver = false;
 
 
@@ -386,7 +389,6 @@ function resetGame() {
 //Funktion um Ergebnis zu finden
 function findOutCome() {
     let resultMessage = '';
-
 
     if (spieler1Choice && spieler2Choice) {
 
@@ -450,9 +452,11 @@ function findOutCome() {
             score.addScorePlayer1();
         }
 
+
         result.showResult(resultMessage);
         result.showRestartNotice("Drücke M um noch eine Runde zu spielen :)");
-        isGameOver = true;
+
+
     }
 
 }
@@ -504,36 +508,35 @@ function init() {
     document.addEventListener('keydown', (event) => {
         const key = event.key.toLowerCase(); //taste wird abgespeichert
 
-        if(isGameOver) {
+
             //Restart Game
-            if (key === 'm') {
+            if (!isGameOver) {
+
+                //Spieler 1
+                if (key === 'q') {
+                    //Schere
+                    spieler1.choosesActionPlayer1('q');
+                } else if (key === 'w') {
+                    //Papier
+                    spieler1.choosesActionPlayer1('w');
+                } else if (key === 'e') {
+                    //Stein
+                    spieler1.choosesActionPlayer1('e');
+                }
+
+                //Spieler 2
+                if (key === 'i') {
+                    //schere
+                    spieler2.choosesActionPlayer2('i');
+                } else if (key === 'o') {
+                    //stein
+                    spieler2.choosesActionPlayer2('o');
+                } else if (key === 'p') {
+                    //papier
+                    spieler2.choosesActionPlayer2('p');
+                }
+            } else if(key === 'm') {
                 resetGame();
-                isGameOver = false;
-            }
-        }
-
-            //Spieler 1
-            if (key === 'q') {
-                //Schere
-                spieler1.choosesActionPlayer1('q');
-            } else if (key === 'w') {
-                //Papier
-                spieler1.choosesActionPlayer1('w');
-            } else if (key === 'e') {
-                //Stein
-                spieler1.choosesActionPlayer1('e');
-            }
-
-            //Spieler 2
-            if (key === 'i') {
-                //schere
-                spieler2.choosesActionPlayer2('i');
-            } else if (key === 'o') {
-                //stein
-                spieler2.choosesActionPlayer2('o');
-            } else if (key === 'p') {
-                //papier
-                spieler2.choosesActionPlayer2('p');
             }
 
 
