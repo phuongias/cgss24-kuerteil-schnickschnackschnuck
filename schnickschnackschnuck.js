@@ -11,7 +11,6 @@ window.addEventListener('resize', onWindowResize, false);
 let isGameOver = false;
 
 let mixer = null;
-let mixer2 = null;
 
 
 const clock = new THREE.Clock();
@@ -41,12 +40,6 @@ let currentResultTextMesh = null;
 let currentRestartTextMesh = null;
 
 
-//Spieler kann nur einmal Schere Stein oder Papier ausführen -> nicht mehr notwendig
-// da spieler bis zum countdown mehrfach drücken kann
-/*let spieler1ActionExecuted = false;
-let spieler2ActionExecuted = false;*/
-
-
 //Spieler Klasse
 class DreiDObjekt {
     countdown = new Countdown();
@@ -54,7 +47,6 @@ class DreiDObjekt {
     constructor(name) {
         this.name = name;
         this.mixer = null;
-        /*this.mixer = new THREE.AnimationMixer();*/
         this.handName = null;
     }
 
@@ -111,14 +103,14 @@ function loadDefaultAnimation() {
 
     //links
     spieler1.loadAnimation('assets/tom/main_mirror_schnickschnack.glb', 'faust',
-        'handRockDefault1', mixer2,
+        'handRockDefault1', mixer,
         [-5, 0, -3.5], //-5, 0, -2
         [0.1, 0.11, 0.1],
         [0, 0, 0]);
 
     //rechts
     spieler2.loadAnimation('assets/tom/main_schnickschnack.glb', 'faust',
-        'handRockDefault2', mixer2,
+        'handRockDefault2', mixer,
         [5, 0.1, -3.4], //5, 0.1, -3.4
         [0.1, 0.11, 0.1],
         [0, -0.9, 0]);
@@ -184,19 +176,19 @@ function makeActions() {
         switch (spieler2Choice) {
             case 'i':
                 spieler2.loadAnimation('assets/tom/schere_final.glb', 'schere',
-                    'scissorsHand', mixer2,
+                    'scissorsHand', mixer,
                     [4.5, 0, -2], [0.1, 0.11, 0.1], [0, Math.PI, -20]);
                 break;
 
             case 'o':
                 spieler2.loadAnimation('assets/tom/stein.glb', 'stein',
-                    'handRockDefault2', mixer2,
+                    'handRockDefault2', mixer,
                     [4.5, 0, 0], [0.1, 0.11, 0.1], [-0.2, -2.3, -0.4]);
                 break;
 
             case 'p':
                 spieler2.loadAnimation('assets/tom/papier_final.glb', 'papier',
-                    'HandWave', mixer2,
+                    'HandWave', mixer,
                     [4.5, 0, -3], [0.1, 0.11, 0.1], [0, 0, 20]);
                 break;
         }
@@ -215,7 +207,7 @@ function loadSchnuckAnimation() {
     //spieler1.removeAnimation();
     //spieler2.removeAnimation();
     background3.loadAnimation('assets/tom/only_schnuck.glb', 'schnuck',
-        'schnickpick', mixer2,
+        'schnickpick', mixer,
         [0, 0.1, -6.5],
         [0.2, 0.11, 0.1],//0.15, 0.15, 0.15
         [0, 0, 0])
@@ -454,7 +446,7 @@ function findOutCome() {
 
 
         result.showResult(resultMessage);
-        result.showRestartNotice("Drücke M um noch eine Runde zu spielen :)");
+        result.showRestartNotice("Drücke M, um eine weitere Runde zu starten :)");
 
 
     }
@@ -509,35 +501,35 @@ function init() {
         const key = event.key.toLowerCase(); //taste wird abgespeichert
 
 
-            //Restart Game
-            if (!isGameOver) {
+        //Restart Game
+        if (!isGameOver) {
 
-                //Spieler 1
-                if (key === 'q') {
-                    //Schere
-                    spieler1.choosesActionPlayer1('q');
-                } else if (key === 'w') {
-                    //Papier
-                    spieler1.choosesActionPlayer1('w');
-                } else if (key === 'e') {
-                    //Stein
-                    spieler1.choosesActionPlayer1('e');
-                }
-
-                //Spieler 2
-                if (key === 'i') {
-                    //schere
-                    spieler2.choosesActionPlayer2('i');
-                } else if (key === 'o') {
-                    //stein
-                    spieler2.choosesActionPlayer2('o');
-                } else if (key === 'p') {
-                    //papier
-                    spieler2.choosesActionPlayer2('p');
-                }
-            } else if(key === 'm') {
-                resetGame();
+            //Spieler 1
+            if (key === 'q') {
+                //Schere
+                spieler1.choosesActionPlayer1('q');
+            } else if (key === 'w') {
+                //Papier
+                spieler1.choosesActionPlayer1('w');
+            } else if (key === 'e') {
+                //Stein
+                spieler1.choosesActionPlayer1('e');
             }
+
+            //Spieler 2
+            if (key === 'i') {
+                //schere
+                spieler2.choosesActionPlayer2('i');
+            } else if (key === 'o') {
+                //stein
+                spieler2.choosesActionPlayer2('o');
+            } else if (key === 'p') {
+                //papier
+                spieler2.choosesActionPlayer2('p');
+            }
+        } else if (key === 'm') {
+            resetGame();
+        }
 
 
     });
