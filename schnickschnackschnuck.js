@@ -53,6 +53,7 @@ class DreiDObjekt {
     //Methode zum Laden der Handanimation
     //Quelle: https://youtu.be/yPA2z7fl4J8?si=F7DOcu4_3Tney-4F -> Load 3D Object from blender in Three.js
     //Quelle: https://youtu.be/GByT8ActvDk?si=C7BWX5MIsQl_UmwL -> Load Animation frm blender in Three.js
+
     loadAnimation(path, animationName, handName, mixer, position, scale, rotation) {
         const loader = new THREE.GLTFLoader();
         loader.load(path, (glb) => {
@@ -68,6 +69,18 @@ class DreiDObjekt {
             const clip = THREE.AnimationClip.findByName(clips, animationName);
             const action = this.mixer.clipAction(clip);
             action.play();
+            const textureLoader = new TextureLoader();
+            const texture = textureLoader.load('./assets/pakettextur.jpg', (texture) => {
+                texture.wrapS = THREE.RepeatWrapping;
+                texture.wrapT = THREE.RepeatWrapping;
+                texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
+                texture.needsUpdate = true;
+            });
+            object.traverse(function (child) {
+                if (child instanceof THREE.Mesh) {
+                    child.material = new THREE.MeshStandardMaterial({map: texture});
+                }
+            });
         }, function (xhr) {
             console.log((xhr.loaded / xhr.total * 100) + '% loaded');
         }, function (error) {
@@ -235,7 +248,7 @@ class Countdown {
             if (countdown <= 0) {
                 clearInterval(countdownInterval);
                 if (spieler1Choice && spieler2Choice) {
-                    findOutCome();
+                    findOutcome();
                     makeActions();
 
                 } else {
@@ -277,11 +290,11 @@ class Result {
 
 
             const textMesh = new THREE.Mesh(textGeometry,
-                [new THREE.MeshPhongMaterial({color: 'black'}) //front
+                [new THREE.MeshPhongMaterial({color: 'red'}) //front
                 ])
 
             textMesh.castShadow = true; //schatten
-            textMesh.position.set(-2.35, 3, -1.3);
+            textMesh.position.set(-3.35, 3, -1.3);
             textMesh.rotation.y = 0;
             scene.add(textMesh);
 
@@ -387,74 +400,77 @@ function resetGame() {
 
 
 //Funktion um Ergebnis zu finden
-function findOutCome() {
-    let resultMessage = '';
+function findOutcome() {
+    let resultMessage;
+    let Spieler2WinMessage = '\n                          Spieler 2\n                       hat gewonnen!';
+    let Spieler1WinMessage = '\n   Spieler1\nhat gewonnen!'
+    let UnentschiedenMessage = '\n\n          Unentschieden!'
 
     if (spieler1Choice && spieler2Choice) {
 
         if (spieler1Choice === 'q' && spieler2Choice === 'i') {
             //Schere vs Schere
             console.log('Unentschieden: Schere');
-            resultMessage = '  Unentschieden:\n beide haben Schere';
+            resultMessage = UnentschiedenMessage;
 
 
         } else if (spieler1Choice === 'w' && spieler2Choice === 'o') {
             //Stein vs Stein
             console.log('Unentschieden: beide Stein');
-            resultMessage = '  Unentschieden:\n beide haben Stein';
+            resultMessage = UnentschiedenMessage;
 
 
         } else if (spieler1Choice === 'e' && spieler2Choice === 'p') {
             //Paper vs Papier
             console.log('Unentschieden: beide Papier');
-            resultMessage = ' Unentschieden:\n beide haben Papier';
+            resultMessage = UnentschiedenMessage;
 
 
         } else if (spieler1Choice === 'q' && spieler2Choice === 'o') {
             //Spieler 1: SCHERE vs. Spieler 2: STEIN
             console.log('Spieler 2 gewinnt: Stein schlägt Schere');
-            resultMessage = '  Spieler 2 gewinnt \n    mit Stein';
+            resultMessage = Spieler2WinMessage;
             score.addScorePlayer2();
 
 
         } else if (spieler1Choice === 'q' && spieler2Choice === 'p') {
             //Spieler 1: SCHERE vs. Spieler 2: PAPIER
             console.log(' Spieler 1 gewinnt: Schere schneidet Papier');
-            resultMessage = ' Spieler 1 gewinnt \n   mit Schere';
+            resultMessage = Spieler1WinMessage;
             score.addScorePlayer1();
 
 
         } else if (spieler1Choice === 'w' && spieler2Choice === 'i') {
             //Spieler 1: STEIN vs. Spieler 2: SCHERE
             console.log('Spieler 1 gewinnt: Stein schlägt Schere');
-            resultMessage = ' Spieler 1 gewinnt \n   mit Stein';
+            resultMessage = Spieler1WinMessage;
             score.addScorePlayer1();
 
 
         } else if (spieler1Choice === 'w' && spieler2Choice === 'p') {
             //Spieler 1: STEIN vs. Spieler 2: SCHERE
             console.log('Spieler 2 gewinnt: Papier umhüllt Stein');
-            resultMessage = ' Spieler 2 gewinnt \n   mit Papier';
+            resultMessage = Spieler2WinMessage;
             score.addScorePlayer2();
 
 
         } else if (spieler1Choice === 'e' && spieler2Choice === 'i') {
             //Spieler 1: PAPIER vs. Spieler 2: SCHERE
             console.log('Spieler 2 gewinnt: Schere schneidet Papier');
-            resultMessage = ' Spieler 2 gewinnt \n   mit Schere';
+            resultMessage = Spieler2WinMessage;
             score.addScorePlayer2();
 
 
         } else if (spieler1Choice === 'e' && spieler2Choice === 'o') {
             //Spieler 1: PAPIER vs. Spieler 2: STEIN
             console.log('Spieler 1 gewinnt: Papier umhüllt Stein');
-            resultMessage = ' Spieler 1 gewinnt \n   mit Papier';
+            resultMessage = Spieler1WinMessage;
             score.addScorePlayer1();
         }
 
 
         result.showResult(resultMessage);
-        result.showRestartNotice("Drücke M, um eine weitere Runde zu starten :)");
+        result.showRestartNotice("\n\n\n\n\n\n\n\nDrücke M, um eine weitere Runde zu starten :)");
 
 
     }
