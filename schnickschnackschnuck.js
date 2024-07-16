@@ -142,9 +142,7 @@ function loadDefaultAnimation() {
 function makeActions() {
     if (spieler1Choice && spieler2Choice) {//wenn beide Spieler gedrückt haben
 
-        spieler1.removeAnimation();
         //findOutcome(); //resultat anzeigen TODO: globale Animationsnamen ändern, um "Gewinneranimationen" zu zeigen?
-
         switch (spieler1Choice) {
             //Spieler 1
             case 'q':
@@ -163,35 +161,45 @@ function makeActions() {
                 break;
 
             case 'e':
-                spieler1.loadAnimation('assets/tom/neu/blattSpieler1.glb',
-                    'papier', 'HandWave', mixer,
-                    [-4.5, 0, -2], [0.1, 0.11, 0.1], [0, 0, 0]);
+                spieler1.loadAnimation('assets/tom/neu/blattSpieler1.glb', 'papier',
+                    'HandWave', mixer,
+                    [-4.5, 0, -2],
+                    [0.1, 0.11, 0.1],
+                    [0, 0, 0]);
                 break;
 
 
         }
-        //Spieler 2
-        spieler2.removeAnimation();//default Stein entfernen
 
+        spieler1.removeAnimation();
+        //Spieler 2
         switch (spieler2Choice) {
             case 'i':
-                spieler2.loadAnimation('assets/tom/schere_final.glb', 'schere',
+                spieler2.loadAnimation('assets/tom/neu/schereSpieler2.glb', 'schere',
                     'scissorsHand', mixer,
-                    [4.5, 0, -2], [0.1, 0.11, 0.1], [0, Math.PI, -20]);
+                    [4.5, 0, -2], //position
+                    [0.1, 0.11, 0.1], //size
+                    [0, 0, 0]); //rotation
                 break;
 
             case 'o':
-                spieler2.loadAnimation('assets/tom/stein.glb', 'stein',
+                spieler2.loadAnimation('assets/tom/neu/steinSpieler2.glb', 'stein',
                     'handRockDefault2', mixer,
-                    [4.5, 0, 0], [0.1, 0.11, 0.1], [-0.2, -2.3, -0.4]);
+                    [4.5, 0, -3],
+                    [0.1, 0.11, 0.1],
+                    [0, 0, 0]);
                 break;
 
             case 'p':
-                spieler2.loadAnimation('assets/tom/papier_final.glb', 'papier',
+                spieler2.loadAnimation('assets/tom/neu/blattSpieler2.glb', 'papier',
                     'HandWave', mixer,
-                    [4.5, 0, -3], [0.1, 0.11, 0.1], [0, 0, 20]);
+                    [4.5, 0, -3],
+                    [0.1, 0.11, 0.1],
+                    [0, 0, 0]);
                 break;
         }
+
+        spieler2.removeAnimation();//default Stein entfernen
     }
     spieler1Choice = null;
     spieler2Choice = null;
