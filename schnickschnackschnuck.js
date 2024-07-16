@@ -31,7 +31,9 @@ let background2 = null;
 let background3 = null;
 
 let spieler1Choice = null;
+let spieler1Animation = null;
 let spieler2Choice = null;
+let spieler2Animation = null;
 
 let spieler1score = 0;
 let spieler2score = 0;
@@ -156,63 +158,179 @@ function makeActions() {
     if (spieler1Choice && spieler2Choice) {//wenn beide Spieler gedrückt haben
 
         //findOutcome(); //resultat anzeigen TODO: globale Animationsnamen ändern, um "Gewinneranimationen" zu zeigen?
-        switch (spieler1Choice) {
-            //Spieler 1
-            case 'q':
-                spieler1.loadAnimation('assets/tom/neu/schereSpieler1.glb', 'schere',
+
+        spieler1.removeAnimation();
+        switch (spieler1Animation) {
+
+            //#######   Spieler 1       #########
+            //#######   SAME            #########
+
+            case 'schere_SAME':
+                spieler1.loadAnimation('assets/tom/neu/s1_Schere_SAME.glb', 'schere',
                     'schere1', mixer,
                     [-5, 0, -3.5], //-5, 0, -2
                     [0.1, 0.11, 0.1],
                     [0, 0, 0]);
                 break;
-            case 'w':
-                spieler1.loadAnimation('assets/tom/neu/steinSpieler1.glb', 'stein',
+            case 'stein_SAME':
+                spieler1.loadAnimation('assets/tom/neu/s1_Stein_SAME.glb', 'stein',
                     'handRockDefault1', mixer,
                     [-5, 0, -3.5], //-5, 0, -2
                     [0.1, 0.11, 0.1],
                     [0, 0, 0]);
                 break;
 
-            case 'e':
-                spieler1.loadAnimation('assets/tom/neu/blattSpieler1.glb', 'papier',
+            case 'papier_SAME':
+                spieler1.loadAnimation('assets/tom/neu/s1_Papier_SAME.glb', 'papier',
                     'HandWave', mixer,
-                    [-4.5, 0, -2],
+                    [-5, 0, -3.5], //-5, 0, -2
                     [0.1, 0.11, 0.1],
                     [0, 0, 0]);
                 break;
 
+            //#######   Spieler 1       #########
+            //#######   WIN             #########
+
+            case 'schere_WIN':
+                spieler1.loadAnimation('assets/tom/neu/s1_Schere_WIN.glb', 'schere',
+                    'schere1', mixer,
+                    [-5, 0, -3.5], //-5, 0, -2
+                    [0.1, 0.11, 0.1],
+                    [0, 0, 0]);
+                break;
+            case 'stein_WIN':
+                spieler1.loadAnimation('assets/tom/neu/s1_Stein_WIN.glb', 'stein',
+                    'handRockDefault1', mixer,
+                    [-5, 0, -3.5], //-5, 0, -2
+                    [0.1, 0.11, 0.1],
+                    [0, 0, 0]);
+                break;
+
+            case 'papier_WIN':
+                spieler1.loadAnimation('assets/tom/neu/s1_Papier_WIN.glb', 'papier',
+                    'HandWave', mixer,
+                    [-5, 0, -3.5], //-5, 0, -2
+                    [0.1, 0.11, 0.1],
+                    [0, 0, 0]);
+                break;
+
+            //#######   Spieler 1       #########
+            //#######   LOSS            #########
+
+            case 'schere_LOSS':
+                spieler1.loadAnimation('assets/tom/neu/s1_Schere_LOSS.glb', 'schere',
+                    'schere1', mixer,
+                    [-5, 0, -3.5], //-5, 0, -2
+                    [0.1, 0.11, 0.1],
+                    [0, 0, 0]);
+                break;
+            case 'stein_LOSS':
+                spieler1.loadAnimation('assets/tom/neu/s1_Stein_LOSS.glb', 'stein',
+                    'handRockDefault1', mixer,
+                    [-5, 0, -3.5], //-5, 0, -2
+                    [0.1, 0.11, 0.1],
+                    [0, 0, 0]);
+                break;
+
+            case 'papier_LOSS':
+                spieler1.loadAnimation('assets/tom/neu/s1_Papier_LOSS.glb', 'papier',
+                    'HandWave', mixer,
+                    [-5, 0, -3.5], //-5, 0, -2
+                    [0.1, 0.11, 0.1],
+                    [0, 0, 0]);
+                break;
 
         }
 
-        spieler1.removeAnimation();
-        //Spieler 2
-        switch (spieler2Choice) {
-            case 'i':
-                spieler2.loadAnimation('assets/tom/neu/schereSpieler2.glb', 'schere',
+
+        spieler2.removeAnimation();
+        switch (spieler2Animation) {
+
+            //#######   Spieler 2       #########
+            //#######   SAME            #########
+
+            case 'schere_SAME':
+                spieler2.loadAnimation('assets/tom/neu/s2_Schere_SAME.glb', 'schere',
                     'scissorsHand', mixer,
-                    [4.5, 0, -2], //position
+                    [5, 0, -3.4], //position
                     [0.1, 0.11, 0.1], //size
                     [0, 0, 0]); //rotation
                 break;
 
-            case 'o':
-                spieler2.loadAnimation('assets/tom/neu/steinSpieler2.glb', 'stein',
+            case 'stein_SAME':
+                spieler2.loadAnimation('assets/tom/neu/s2_Stein_SAME.glb', 'stein',
                     'handRockDefault2', mixer,
-                    [4.5, 0, -3],
+                    [5, 0.1, -3.4], //5, 0.1, -3.4
                     [0.1, 0.11, 0.1],
                     [0, 0, 0]);
                 break;
 
-            case 'p':
-                spieler2.loadAnimation('assets/tom/neu/blattSpieler2.glb', 'papier',
+            case 'papier_SAME':
+                spieler2.loadAnimation('assets/tom/neu/s2_Papier_SAME.glb', 'papier',
                     'HandWave', mixer,
-                    [4.5, 0, -3],
+                    [5, 0.1, -3.4], //5, 0.1, -3.4
                     [0.1, 0.11, 0.1],
                     [0, 0, 0]);
                 break;
+
+            //#######   Spieler 2       #########
+            //#######   WIN             #########
+
+            case 'schere_WIN':
+                spieler2.loadAnimation('assets/tom/neu/s2_Schere_WIN.glb', 'schere',
+                    'scissorsHand', mixer,
+                    [5, 0, -3.4], //position
+                    [0.1, 0.11, 0.1], //size
+                    [0, 0, 0]); //rotation
+                break;
+
+            case 'stein_WIN':
+                spieler2.loadAnimation('assets/tom/neu/s2_Stein_WIN.glb', 'stein',
+                    'handRockDefault2', mixer,
+                    [5, 0.1, -3.4], //5, 0.1, -3.4
+                    [0.1, 0.11, 0.1],
+                    [0, 0, 0]);
+                break;
+
+            case 'papier_WIN':
+                spieler2.loadAnimation('assets/tom/neu/s2_Papier_WIN.glb', 'papier',
+                    'HandWave', mixer,
+                    [5, 0.1, -3.4], //5, 0.1, -3.4
+                    [0.1, 0.11, 0.1],
+                    [0, 0, 0]);
+                break;
+
+            //#######   Spieler 2       #########
+            //#######   LOSS            #########
+
+            case 'schere_LOSS':
+                spieler2.loadAnimation('assets/tom/neu/s2_Schere_LOSS.glb', 'schere',
+                    'scissorsHand', mixer,
+                    [5, 0, -3.4], //position
+                    [0.1, 0.11, 0.1], //size
+                    [0, 0, 0]); //rotation
+                break;
+
+            case 'stein_LOSS':
+                spieler2.loadAnimation('assets/tom/neu/s2_Stein_LOSS.glb', 'stein',
+                    'handRockDefault2', mixer,
+                    [5, 0.1, -3.4], //5, 0.1, -3.4
+                    [0.1, 0.11, 0.1],
+                    [0, 0, 0]);
+                break;
+
+            case 'papier_LOSS':
+                spieler2.loadAnimation('assets/tom/neu/s2_Papier_LOSS.glb', 'papier',
+                    'HandWave', mixer,
+                    [5, 0.1, -3.4], //5, 0.1, -3.4
+                    [0.1, 0.11, 0.1],
+                    [0, 0, 0]);
+                break;
+
+
         }
 
-        spieler2.removeAnimation();//default Stein entfernen
+
     }
     spieler1Choice = null;
     spieler2Choice = null;
@@ -406,29 +524,38 @@ function findOutcome() {
     let Spieler1WinMessage = '\n   Spieler1\nhat gewonnen!'
     let UnentschiedenMessage = '\n\n          Unentschieden!'
 
+
     if (spieler1Choice && spieler2Choice) {
 
         if (spieler1Choice === 'q' && spieler2Choice === 'i') {
             //Schere vs Schere
             console.log('Unentschieden: Schere');
+            spieler1Animation = 'schere_SAME';
+            spieler2Animation = 'schere_SAME';
             resultMessage = UnentschiedenMessage;
 
 
         } else if (spieler1Choice === 'w' && spieler2Choice === 'o') {
             //Stein vs Stein
             console.log('Unentschieden: beide Stein');
+            spieler1Animation = 'stein_SAME';
+            spieler2Animation = 'stein_SAME';
             resultMessage = UnentschiedenMessage;
 
 
         } else if (spieler1Choice === 'e' && spieler2Choice === 'p') {
             //Paper vs Papier
             console.log('Unentschieden: beide Papier');
+            spieler1Animation = 'papier_SAME';
+            spieler2Animation = 'papier_SAME';
             resultMessage = UnentschiedenMessage;
 
 
         } else if (spieler1Choice === 'q' && spieler2Choice === 'o') {
             //Spieler 1: SCHERE vs. Spieler 2: STEIN
             console.log('Spieler 2 gewinnt: Stein schlägt Schere');
+            spieler1Animation = 'schere_LOSS';
+            spieler2Animation = 'stein_WIN';
             resultMessage = Spieler2WinMessage;
             score.addScorePlayer2();
 
@@ -436,6 +563,8 @@ function findOutcome() {
         } else if (spieler1Choice === 'q' && spieler2Choice === 'p') {
             //Spieler 1: SCHERE vs. Spieler 2: PAPIER
             console.log(' Spieler 1 gewinnt: Schere schneidet Papier');
+            spieler1Animation = 'schere_WIN';
+            spieler2Animation = 'papier_LOSS';
             resultMessage = Spieler1WinMessage;
             score.addScorePlayer1();
 
@@ -443,13 +572,17 @@ function findOutcome() {
         } else if (spieler1Choice === 'w' && spieler2Choice === 'i') {
             //Spieler 1: STEIN vs. Spieler 2: SCHERE
             console.log('Spieler 1 gewinnt: Stein schlägt Schere');
+            spieler1Animation = 'stein_WIN';
+            spieler2Animation = 'schere_LOSS';
             resultMessage = Spieler1WinMessage;
             score.addScorePlayer1();
 
 
         } else if (spieler1Choice === 'w' && spieler2Choice === 'p') {
-            //Spieler 1: STEIN vs. Spieler 2: SCHERE
+            //Spieler 1: STEIN vs. Spieler 2: PAPIER
             console.log('Spieler 2 gewinnt: Papier umhüllt Stein');
+            spieler1Animation = 'stein_LOSS';
+            spieler2Animation = 'papier_WIN';
             resultMessage = Spieler2WinMessage;
             score.addScorePlayer2();
 
@@ -457,6 +590,8 @@ function findOutcome() {
         } else if (spieler1Choice === 'e' && spieler2Choice === 'i') {
             //Spieler 1: PAPIER vs. Spieler 2: SCHERE
             console.log('Spieler 2 gewinnt: Schere schneidet Papier');
+            spieler1Animation = 'schere_WIN';
+            spieler2Animation = 'papier_LOSS';
             resultMessage = Spieler2WinMessage;
             score.addScorePlayer2();
 
@@ -464,6 +599,8 @@ function findOutcome() {
         } else if (spieler1Choice === 'e' && spieler2Choice === 'o') {
             //Spieler 1: PAPIER vs. Spieler 2: STEIN
             console.log('Spieler 1 gewinnt: Papier umhüllt Stein');
+            spieler1Animation = 'papier_WIN';
+            spieler2Animation = 'stein_LOSS';
             resultMessage = Spieler1WinMessage;
             score.addScorePlayer1();
         }
@@ -471,6 +608,7 @@ function findOutcome() {
 
         result.showResult(resultMessage);
         result.showRestartNotice("\n\n\n\n\n\n\n\nDrücke M, um eine weitere Runde zu starten :)");
+
 
 
     }
