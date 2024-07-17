@@ -1,5 +1,5 @@
 .container {
-    position: absolute;
+    position: relative;
     width: 50%;
     text-align: center;
 }
@@ -20,7 +20,8 @@ h1 {
     font-weight: bold;
     font-family: 'Roboto Mono', monospace;
     position: absolute;
-    left: 200px;
+    left: 350px;
+    bottom: 100px;
 }
 
 #spieler2score{
@@ -29,7 +30,9 @@ h1 {
     font-weight: bold;
     font-family: 'Roboto Mono', monospace;
     position: absolute;
-    right: 200px;
+    right: 280px;
+    bottom: 100px;
+
 }
 
 .controls-table-spieler1 {
@@ -57,3 +60,11 @@ h1 {
     color: #ff638d;
 }
 
+/*verhindert das scrollen*/
+/*Quelle: https://stackoverflow.com/questions/28411499/disable-scrolling-on-body*/
+body, html {
+    overflow-x: hidden;
+    overflow-y: hidden;
+    max-width: 100%;
+    max-height: 100%;
+}
