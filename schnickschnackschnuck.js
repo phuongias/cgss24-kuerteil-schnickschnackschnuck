@@ -1,5 +1,6 @@
 // Quellen: shaders -> sparkles: https://www.shadertoy.com/results?query=sparkles
 
+
 document.addEventListener('DOMContentLoaded', function () {
     onWindowResize();
     init();
@@ -9,7 +10,6 @@ document.addEventListener('DOMContentLoaded', function () {
 window.addEventListener('resize', onWindowResize, false);
 
 let isGameOver = false;
-
 let mixer = null;
 
 
@@ -463,7 +463,7 @@ class Result {
 }
 
 
-//Score Klasse, um Punkte anzuzeigen -> showScore allerdings nicht genutzt
+//Score Klasse, um Punkte anzuzeigen
 class Score {
     constructor() {
     }
@@ -586,14 +586,14 @@ function findOutcome() {
             resultMessage = Spieler2WinMessage;
             score.addScorePlayer2();
 
-
+            //Angepasst
         } else if (spieler1Choice === 'e' && spieler2Choice === 'i') {
             //Spieler 1: PAPIER vs. Spieler 2: SCHERE
             console.log('Spieler 2 gewinnt: Schere schneidet Papier');
-            spieler1Animation = 'schere_WIN';
-            spieler2Animation = 'papier_LOSS';
+            spieler1Animation = 'papier_LOSS'; //papier
+            spieler2Animation = 'schere_WIN';  //Schere
             resultMessage = Spieler2WinMessage;
-            score.addScorePlayer2();
+            score.addScorePlayer1();
 
 
         } else if (spieler1Choice === 'e' && spieler2Choice === 'o') {
@@ -609,8 +609,6 @@ function findOutcome() {
         result.showResult(resultMessage);
         result.showRestartNotice("\n\n\n\n\n\n\n\nDrücke M, um eine weitere Runde zu starten :)");
 
-
-
     }
 
 }
@@ -622,6 +620,40 @@ function onWindowResize() {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
+}
+
+function guiControlFunction(camera, renderer) {
+    const orbitControls = new THREE.OrbitControls(camera, renderer.domElement);
+    orbitControls.noZoom = false;
+    orbitControls.noPan = false;
+    orbitControls.staticMoving = true;
+    orbitControls.enabled = false
+
+    //GUI für die Kamera
+    let controls = new function () {
+        this.freeCamera = false;
+        this.frontView = function () {
+            camera.position.set(0, 1, 3.4);
+            camera.lookAt(new THREE.Vector3(0, 0.5, 0))
+            camera.updateProjectionMatrix();
+
+        };
+    };
+
+    //Quelle: https://discourse.threejs.org/t/how-to-update-a-guis-display-from-an-objects-properties/27578
+    //Quelle: https://threejs.org/docs/#examples/en/controls/OrbitControls
+    let gui = new dat.GUI();
+    gui.add(controls, 'freeCamera').onChange(function (e) {
+        orbitControls.enabled = e;
+
+    });
+    gui.add(controls, 'frontView')
+
+    //gui position im bild
+    gui.domElement.style.position = 'fixed'
+    gui.domElement.style.bottom = '0';
+    gui.domElement.style.right = '0';
+
 }
 
 
@@ -637,8 +669,8 @@ function init() {
     scene.background = new THREE.Color(0xffffff);
 
     //Kamera
-    camera.position.set(0, 1, 2);
-    scene.add(camera);
+    camera.position.set(0, 0, 3);
+    camera.lookAt(new THREE.Vector3(0, 0, 0));
 
 
     //WebGL Renderer
@@ -651,6 +683,8 @@ function init() {
     light.position.set(2, 2, 5);
     scene.add(light);
     scene.add(directionalLight);
+
+    guiControlFunction(camera, renderer);
 
     //zuerst wird faust angezeigt
     loadDefaultAnimation();
