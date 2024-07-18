@@ -16,6 +16,9 @@ let wantsReset = false;
 
 const clock = new THREE.Clock();
 const scene = new THREE.Scene();
+const loader = new THREE.TextureLoader();
+
+
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 100);
 const canvas = document.querySelector(".webgl");
 const renderer = new THREE.WebGLRenderer({canvas: canvas});
@@ -120,27 +123,27 @@ function loadDefaultAnimation() {
     //links
     spieler1.loadAnimation('assets/tom/main_mirror_schnickschnack.glb', 'faust',
         'handRockDefault1', mixer,
-        [-5, 0, -3.5], //-5, 0, -2
+        [-5, -0.7, -3.5], //-5, 0, -2
         [0.1, 0.11, 0.1],
         [0, 0, 0]);
 
     //rechts
     spieler2.loadAnimation('assets/tom/main_schnickschnack.glb', 'faust',
         'handRockDefault2', mixer,
-        [5, 0.1, -3.4], //5, 0.1, -3.4
+        [5, -0.7, -3.4], //5, 0.1, -3.4
         [0.1, 0.11, 0.1],
         [0, -0.9, 0]);
 
 
-    background1.loadAnimation('assets/tom/schnick.glb', 'schnick',
+    background1.loadAnimation('assets/tom/neu/blenderfiles/schnickschnackschnuck/bg/neu_bg_only_schnick.glb', 'x',
         'schnickpick', mixer,
-        [0, 0.1, -1],
+        [-4.7, 0.7, -5],
         [0.1, 0.11, 0.1],
         [0, 0, 0])
 
-    background2.loadAnimation('assets/tom/schnack.glb', 'schnack',
+    background2.loadAnimation('assets/tom/neu/blenderfiles/schnickschnackschnuck/bg/neu_bg_only_schnack.glb', 'x',
         'schnickpick', mixer,
-        [0, 0.1, -2],
+        [4, 0.7, -5],
         [0.1, 0.11, 0.1],
         [0, 0, 0])
 
@@ -149,6 +152,8 @@ function loadDefaultAnimation() {
         [5, 0.1, -200],
         [0.1, 0.11, 0.1],
         [0, 0, 0])
+
+
 
 
 }
@@ -533,8 +538,8 @@ function resetStage() {
 //Funktion um Ergebnis zu finden
 function findOutcome() {
     let resultMessage;
-    let Spieler2WinMessage = '\n                          Spieler 2\n                       hat gewonnen!';
-    let Spieler1WinMessage = '\n   Spieler1\nhat gewonnen!'
+    let Spieler2WinMessage = '\n              Spieler 2\n         hat gewonnen!';
+    let Spieler1WinMessage = '\n              Spieler1\n          hat gewonnen!'
     let UnentschiedenMessage = '\n\n          Unentschieden!'
 
 
@@ -624,10 +629,8 @@ function findOutcome() {
 
         //Quelle: https://stackoverflow.com/questions/16873323/javascript-sleep-wait-before-continuing
         setTimeout(function(){
-            result.showRestartNotice("\n\n\n\n\n\n\n\n\n\nDrücke M, um eine weitere Runde zu starten :)\nDrücke X, um die Punkte zurückzusetzen.");
+            result.showRestartNotice("\n\n\n\n\n\n\n\n\n\n\n\nDrücke M, um eine weitere Runde zu starten :)\nDrücke X, um die Punkte zurückzusetzen.");
         }, 3300);
-
-
 
     }
 
@@ -678,6 +681,8 @@ function guiControlFunction(camera, renderer) {
 
 
 function init() {
+
+
     spieler1 = new DreiDObjekt("Spieler 1 / links");
     spieler2 = new DreiDObjekt("Spieler 2 / rechts");
     spieler3 = new DreiDObjekt("Spieler 2 / rechts");
@@ -686,83 +691,103 @@ function init() {
     background3 = new DreiDObjekt("awdawd");
     let score = new Score();
     //Hintergrundfarbe/bild
-    scene.background = new THREE.Color(0xffffff);
+    /*scene.background = new THREE.Color(0xffffff);*/
 
-    //Kamera
-    camera.position.set(0, 0, 3);
-    camera.lookAt(new THREE.Vector3(0, 0, 0));
+    //result.showResult("Drücke 's', um das Spiel zu starten!");
 
+    const loader = new THREE.TextureLoader();
+    loader.load('assets/bilder/logo.png', function(texture) {
+        // Textur als Hintergrund setzen
+        scene.background = texture;
+    });
 
-    //WebGL Renderer
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    renderer.shadowMap.enabled = true;
-    renderer.gammaOutput = true;
-
-    //Licht
-    light.position.set(2, 2, 5);
-    scene.add(light);
-    scene.add(directionalLight);
-
-    guiControlFunction(camera, renderer);
-
-    //zuerst wird faust angezeigt
-    loadDefaultAnimation();
-    score.updateScoreDisplay();
-
-
-    //Event listener für Keyboard Input
-    //Quelle: https://developer.mozilla.org/en-US/docs/Web/API/Element/keydown_event
     document.addEventListener('keydown', (event) => {
         const key = event.key.toLowerCase(); //taste wird abgespeichert
+        if (key === 's') {
+
+            const loader = new THREE.TextureLoader();
+            loader.load('assets/bilder/hintergrund1_berb2.jpg', function(texture) {
+                // Textur als Hintergrund setzen
+                scene.background = texture;
+            });
+            camera.position.set(0, 0, 3);
+            camera.lookAt(new THREE.Vector3(0, 0, 0));
 
 
-        //Restart Game
-        if (!isGameOver) {
-            wantsReset = false;
-            //Spieler 1
-            if (key === 'q') {
-                //Schere
-                spieler1.choosesActionPlayer1('q');
-            } else if (key === 'w') {
-                //Papier
-                spieler1.choosesActionPlayer1('w');
-            } else if (key === 'e') {
-                //Stein
-                spieler1.choosesActionPlayer1('e');
-            }
+            //WebGL Renderer
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            renderer.shadowMap.enabled = true;
+            renderer.gammaOutput = true;
 
-            //Spieler 2
-            if (key === 'i') {
-                //schere
-                spieler2.choosesActionPlayer2('i');
-            } else if (key === 'o') {
-                //stein
-                spieler2.choosesActionPlayer2('o');
-            } else if (key === 'p') {
-                //papier
-                spieler2.choosesActionPlayer2('p');
-            }
-        } else if (key === 'm') {
-            resetStage();
-        }
+            //Licht
+            light.position.set(2, 2, 5);
+            scene.add(light);
+            scene.add(directionalLight);
 
-        else if (key === 'x') {
-            wantsReset = true;
-            result.removeRestartNotice();
-            result.showRestartNotice("\n\n\n\n\n\n\n\n\n\n\nDrücke Y, um Punktereset zu bestätigen. \n\nDrücke M, um die Punkte zu behalten.)");
-            document.addEventListener('keydown', (reset) => {
-                const key = reset.key.toLowerCase();
-                if (key === 'y' && wantsReset) {
-                    score.resetScores();
+            guiControlFunction(camera, renderer);
+
+            //zuerst wird faust angezeigt
+            loadDefaultAnimation();
+            score.updateScoreDisplay();
+
+
+            //Event listener für Keyboard Input
+            //Quelle: https://developer.mozilla.org/en-US/docs/Web/API/Element/keydown_event
+            document.addEventListener('keydown', (event) => {
+                const key = event.key.toLowerCase(); //taste wird abgespeichert
+
+
+                //Restart Game
+                if (!isGameOver) {
+                    wantsReset = false;
+                    //Spieler 1
+                    if (key === 'q') {
+                        //Schere
+                        spieler1.choosesActionPlayer1('q');
+                    } else if (key === 'w') {
+                        //Papier
+                        spieler1.choosesActionPlayer1('w');
+                    } else if (key === 'e') {
+                        //Stein
+                        spieler1.choosesActionPlayer1('e');
+                    }
+
+                    //Spieler 2
+                    if (key === 'i') {
+                        //schere
+                        spieler2.choosesActionPlayer2('i');
+                    } else if (key === 'o') {
+                        //stein
+                        spieler2.choosesActionPlayer2('o');
+                    } else if (key === 'p') {
+                        //papier
+                        spieler2.choosesActionPlayer2('p');
+                    }
+                } else if (key === 'm') {
                     resetStage();
                 }
+
+                else if (key === 'x') {
+                    wantsReset = true;
+                    result.removeRestartNotice();
+                    result.showRestartNotice("\n\n\n\n\n\n\n\n\n\n\n\n\nDrücke Y, um Punktereset zu bestätigen. \n\nDrücke M, um die Punkte zu behalten.)");
+                    document.addEventListener('keydown', (reset) => {
+                        const key = reset.key.toLowerCase();
+                        if (key === 'y' && wantsReset) {
+                            score.resetScores();
+                            resetStage();
+                        }
+                    });
+                }
+
+
+
             });
         }
-
-
-
     });
+
+
 }
 
 
