@@ -477,6 +477,7 @@ class Score {
     addScorePlayer1() {
         spieler1score++;
         console.log('Punkte Spieler1 :' + spieler1score);
+
         this.updateScoreDisplay();
     }
 
@@ -489,6 +490,8 @@ class Score {
     resetScores() {
         spieler2score = 0;
         spieler1score = 0;
+        console.log('Reset. Punkte Spieler1 :' + spieler1score);
+        console.log('Reset. Punkte Spieler2 :' + spieler2score);
         this.updateScoreDisplay();
     }
 
@@ -502,6 +505,7 @@ const score = new Score();
 
 //Funktion, um einzelnes Spiel zurückzusetzen
 function resetStage() {
+    console.log("Stage resetted");
 
     spieler1.removeAnimation();
     spieler2.removeAnimation();
@@ -613,10 +617,17 @@ function findOutcome() {
             resultMessage = Spieler1WinMessage;
             score.addScorePlayer1();
         }
+        //Quelle: https://stackoverflow.com/questions/16873323/javascript-sleep-wait-before-continuing
+        setTimeout(function(){
+            result.showResult(resultMessage);
+        }, 2000);
+
+        //Quelle: https://stackoverflow.com/questions/16873323/javascript-sleep-wait-before-continuing
+        setTimeout(function(){
+            result.showRestartNotice("\n\n\n\n\n\n\n\n\n\nDrücke M, um eine weitere Runde zu starten :)\nDrücke X, um die Punkte zurückzusetzen.");
+        }, 3300);
 
 
-        result.showResult(resultMessage);
-        result.showRestartNotice("\n\n\n\n\n\n\n\n\n\nDrücke M, um eine weitere Runde zu starten :)\nDrücke X, um die Punkte zurückzusetzen.");
 
     }
 
