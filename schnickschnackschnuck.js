@@ -620,7 +620,7 @@ function findOutcome() {
         //Quelle: https://stackoverflow.com/questions/16873323/javascript-sleep-wait-before-continuing
         setTimeout(function(){
             result.showResult(resultMessage);
-        }, 2000);
+        }, 2300);
 
         //Quelle: https://stackoverflow.com/questions/16873323/javascript-sleep-wait-before-continuing
         setTimeout(function(){
