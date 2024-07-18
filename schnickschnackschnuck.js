@@ -1,4 +1,7 @@
 // Quellen: shaders -> sparkles: https://www.shadertoy.com/results?query=sparkles
+// Fonts: https://www.dafont.com/regular-day.font
+// Fonts: https://www.dafont.com/bridgers-brush.font
+// Fonts: https://www.dafont.com/longevity-2.font
 
 
 document.addEventListener('DOMContentLoaded', function () {
