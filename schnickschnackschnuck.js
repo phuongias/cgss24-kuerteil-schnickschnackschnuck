@@ -663,7 +663,7 @@ function guiControlFunction(camera, renderer) {
     //Quelle: https://discourse.threejs.org/t/how-to-update-a-guis-display-from-an-objects-properties/27578
     //Quelle: https://threejs.org/docs/#examples/en/controls/OrbitControls
     let gui = new dat.GUI();
-    gui.add(controls, 'freeCamera').onChange(function (e) {
+    gui.add(controls, 'Kamera bewegen').onChange(function (e) {
         orbitControls.enabled = e;
 
     });
