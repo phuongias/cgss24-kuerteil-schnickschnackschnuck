@@ -11,6 +11,7 @@ window.addEventListener('resize', onWindowResize, false);
 
 let isGameOver = false;
 let mixer = null;
+let wantsReset = false;
 
 
 const clock = new THREE.Clock();
@@ -485,14 +486,22 @@ class Score {
         this.updateScoreDisplay();
     }
 
+    resetScores() {
+        spieler2score = 0;
+        spieler1score = 0;
+        this.updateScoreDisplay();
+    }
+
+
+
 }
 
 
 const result = new Result();
 const score = new Score();
 
-//Funktion, um Spiel zurückzusetzen
-function resetGame() {
+//Funktion, um einzelnes Spiel zurückzusetzen
+function resetStage() {
 
     spieler1.removeAnimation();
     spieler2.removeAnimation();
@@ -607,7 +616,7 @@ function findOutcome() {
 
 
         result.showResult(resultMessage);
-        result.showRestartNotice("\n\n\n\n\n\n\n\nDrücke M, um eine weitere Runde zu starten :)");
+        result.showRestartNotice("\n\n\n\n\n\n\n\n\n\nDrücke M, um eine weitere Runde zu starten :)\nDrücke X, um die Punkte zurückzusetzen.");
 
     }
 
@@ -699,7 +708,7 @@ function init() {
 
         //Restart Game
         if (!isGameOver) {
-
+            wantsReset = false;
             //Spieler 1
             if (key === 'q') {
                 //Schere
@@ -724,8 +733,22 @@ function init() {
                 spieler2.choosesActionPlayer2('p');
             }
         } else if (key === 'm') {
-            resetGame();
+            resetStage();
         }
+
+        else if (key === 'x') {
+            wantsReset = true;
+            result.removeRestartNotice();
+            result.showRestartNotice("\n\n\n\n\n\n\n\n\n\n\nDrücke Y, um Punktereset zu bestätigen. \n\nDrücke M, um die Punkte zu behalten.)");
+            document.addEventListener('keydown', (reset) => {
+                const key = reset.key.toLowerCase();
+                if (key === 'y' && wantsReset) {
+                    score.resetScores();
+                    resetStage();
+                }
+            });
+        }
+
 
 
     });
