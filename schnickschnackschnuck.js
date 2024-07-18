@@ -662,12 +662,12 @@ function guiControlFunction(camera, renderer) {
 
     //Quelle: https://discourse.threejs.org/t/how-to-update-a-guis-display-from-an-objects-properties/27578
     //Quelle: https://threejs.org/docs/#examples/en/controls/OrbitControls
+    //Quelle: https://stackoverflow.com/questions/27509835/creating-an-alias-for-property-name-in-dat-gui
     let gui = new dat.GUI();
-    gui.add(controls, 'Kamera bewegen').onChange(function (e) {
+    gui.add(controls, 'freeCamera').onChange(function (e) {
         orbitControls.enabled = e;
-
-    });
-    gui.add(controls, 'frontView')
+    }).name("Kamera\ bewegen");
+    gui.add(controls, 'frontView').name("zurücksetzen")
 
     //gui position im bild
     gui.domElement.style.position = 'fixed'
