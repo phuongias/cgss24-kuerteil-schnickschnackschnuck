@@ -137,16 +137,16 @@ function loadDefaultAnimation() {
         [0, -0.9, 0]);
 
 
-    background1.loadAnimation('assets/tom/neu/blenderfiles/schnickschnackschnuck/bg/neu_bg_only_schnick.glb', 'schnick',
+    background1.loadAnimation('assets/tom/neu/blenderfiles/schnickschnackschnuck/bg/newnew/neu_bg_only_schnick.glb', 'schnick',
         'schnickpick', mixer,
-        [-4.7, 0.7, -5],
-        [0.1, 0.11, 0.1],
+        [0, 0.7, 0],
+        [1, 1, 1],
         [0, 0, 0])
 
-    background2.loadAnimation('assets/tom/neu/blenderfiles/schnickschnackschnuck/bg/neu_bg_only_schnack.glb', 'schnack',
+    background2.loadAnimation('assets/tom/neu/blenderfiles/schnickschnackschnuck/bg/newnew/neu_bg_only_schnack.glb', 'schnack',
         'schnickpick', mixer,
-        [4, 0.7, -5],
-        [0.1, 0.11, 0.1],
+        [0, 0.7, 0],
+        [1, 1, 1],
         [0, 0, 0])
 
     background3.loadAnimation('assets/tom/only_schnuck_placeholder.glb', 'schnuck2',
