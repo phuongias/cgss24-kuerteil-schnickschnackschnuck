@@ -137,13 +137,13 @@ function loadDefaultAnimation() {
         [0, -0.9, 0]);
 
 
-    background1.loadAnimation('assets/tom/neu/blenderfiles/schnickschnackschnuck/bg/neu_bg_only_schnick.glb', 'x',
+    background1.loadAnimation('assets/tom/neu/blenderfiles/schnickschnackschnuck/bg/neu_bg_only_schnick.glb', 'schnick',
         'schnickpick', mixer,
         [-4.7, 0.7, -5],
         [0.1, 0.11, 0.1],
         [0, 0, 0])
 
-    background2.loadAnimation('assets/tom/neu/blenderfiles/schnickschnackschnuck/bg/neu_bg_only_schnack.glb', 'x',
+    background2.loadAnimation('assets/tom/neu/blenderfiles/schnickschnackschnuck/bg/neu_bg_only_schnack.glb', 'schnack',
         'schnickpick', mixer,
         [4, 0.7, -5],
         [0.1, 0.11, 0.1],
@@ -684,8 +684,14 @@ function init() {
     background2 = new DreiDObjekt("awdawd");
     background3 = new DreiDObjekt("awdawd");
     let score = new Score();
-    //Hintergrundfarbe/bild
-    scene.background = new THREE.Color(0xffffff);
+    //Hintergrundbild
+    const loader = new THREE.TextureLoader();
+    loader.load('assets/bilder/hintergrund1_berb2.jpg', function(texture) {
+        //Textur als Hintergrund setzen
+        scene.background = texture;
+    });
+
+
 
 
     camera.position.set(0, 0, 3);
