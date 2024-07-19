@@ -1,0 +1,16 @@
+.startButton {
+    color: white;
+    background-color: #0000cc;
+    position: relative;
+    bottom: -580px;
+    left: 610px;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 20px;
+    width: 180px;
+    border-radius: 10px;
+
+}
+
