@@ -62,7 +62,7 @@ class DreiDObjekt {
     //Quelle: https://youtu.be/yPA2z7fl4J8?si=F7DOcu4_3Tney-4F -> Load 3D Object from blender in Three.js
     //Quelle: https://youtu.be/GByT8ActvDk?si=C7BWX5MIsQl_UmwL -> Load Animation frm blender in Three.js
 
-    loadAnimation(path, animationName, handName, mixer, position, scale, rotation) {
+    loadAnimationSchnax(path, animationName, handName, mixer, position, scale, rotation) {
         const loader = new THREE.GLTFLoader();
         loader.load(path, (glb) => {
             console.log(glb);
@@ -123,33 +123,33 @@ class DreiDObjekt {
 function loadDefaultAnimation() {
 
     //links
-    spieler1.loadAnimation('assets/tom/main_mirror_schnickschnack.glb', 'faust',
+    spieler1.loadAnimationSchnax('assets/tom/main_mirror_schnickschnack.glb', 'faust',
         'handRockDefault1', mixer,
         [-5, -0.7, -3.5], //-5, 0, -2
         [0.1, 0.11, 0.1],
         [0, 0, 0]);
 
     //rechts
-    spieler2.loadAnimation('assets/tom/main_schnickschnack.glb', 'faust',
+    spieler2.loadAnimationSchnax('assets/tom/main_schnickschnack.glb', 'faust',
         'handRockDefault2', mixer,
         [5, -0.7, -3.4], //5, 0.1, -3.4
         [0.1, 0.11, 0.1],
         [0, -0.9, 0]);
 
 
-    background1.loadAnimation('assets/tom/neu/blenderfiles/schnickschnackschnuck/bg/newnew/neu_bg_only_schnick.glb', 'schnick',
+    background1.loadAnimationSchnax('assets/tom/neu/bg_schnick.glb', 'schnick',
         'schnickpick', mixer,
-        [0, 0.7, 0],
+        [0, 0.15, 0],
         [1, 1, 1],
         [0, 0, 0])
 
-    background2.loadAnimation('assets/tom/neu/blenderfiles/schnickschnackschnuck/bg/newnew/neu_bg_only_schnack.glb', 'schnack',
+    background2.loadAnimationSchnax('assets/tom/neu/bg_schnack.glb', 'schnack',
         'schnickpick', mixer,
-        [0, 0.7, 0],
+        [0, -0.05, 0],
         [1, 1, 1],
         [0, 0, 0])
 
-    background3.loadAnimation('assets/tom/only_schnuck_placeholder.glb', 'schnuck2',
+    background3.loadAnimationSchnax('assets/tom/only_schnuck_placeholder.glb', 'schnuck2',
         'schnickpick', mixer,
         [5, 0.1, -200],
         [0.1, 0.11, 0.1],
@@ -170,14 +170,14 @@ function makeActions() {
             //#######   SAME            #########
 
             case 'schere_SAME':
-                spieler1.loadAnimation('assets/tom/neu/s1_Schere_SAME.glb', 'schere',
+                spieler1.loadAnimationSchnax('assets/tom/neu/s1_Schere_SAME.glb', 'schere',
                     'schere1', mixer,
                     [-5, 0, -3.5], //-5, 0, -2
                     [0.1, 0.11, 0.1],
                     [0, 0, 0]);
                 break;
             case 'stein_SAME':
-                spieler1.loadAnimation('assets/tom/neu/s1_Stein_SAME.glb', 'stein',
+                spieler1.loadAnimationSchnax('assets/tom/neu/s1_Stein_SAME.glb', 'stein',
                     'handRockDefault1', mixer,
                     [-5, 0, -3.5], //-5, 0, -2
                     [0.1, 0.11, 0.1],
@@ -185,7 +185,7 @@ function makeActions() {
                 break;
 
             case 'papier_SAME':
-                spieler1.loadAnimation('assets/tom/neu/s1_Papier_SAME.glb', 'papier',
+                spieler1.loadAnimationSchnax('assets/tom/neu/s1_Papier_SAME.glb', 'papier',
                     'HandWave', mixer,
                     [-5, 0, -3.5], //-5, 0, -2
                     [0.1, 0.11, 0.1],
@@ -196,14 +196,14 @@ function makeActions() {
             //#######   WIN             #########
 
             case 'schere_WIN':
-                spieler1.loadAnimation('assets/tom/neu/s1_Schere_WIN.glb', 'schere',
+                spieler1.loadAnimationSchnax('assets/tom/neu/s1_Schere_WIN.glb', 'schere',
                     'schere1', mixer,
                     [-5, 0, -3.5], //-5, 0, -2
                     [0.1, 0.11, 0.1],
                     [0, 0, 0]);
                 break;
             case 'stein_WIN':
-                spieler1.loadAnimation('assets/tom/neu/s1_Stein_WIN.glb', 'stein',
+                spieler1.loadAnimationSchnax('assets/tom/neu/s1_Stein_WIN.glb', 'stein',
                     'handRockDefault1', mixer,
                     [-5, 0, -3.5], //-5, 0, -2
                     [0.1, 0.11, 0.1],
@@ -211,7 +211,7 @@ function makeActions() {
                 break;
 
             case 'papier_WIN':
-                spieler1.loadAnimation('assets/tom/neu/s1_Papier_WIN.glb', 'papier',
+                spieler1.loadAnimationSchnax('assets/tom/neu/s1_Papier_WIN.glb', 'papier',
                     'HandWave', mixer,
                     [-5, 0, -3.5], //-5, 0, -2
                     [0.1, 0.11, 0.1],
@@ -222,14 +222,14 @@ function makeActions() {
             //#######   LOSS            #########
 
             case 'schere_LOSS':
-                spieler1.loadAnimation('assets/tom/neu/s1_Schere_LOSS.glb', 'schere',
+                spieler1.loadAnimationSchnax('assets/tom/neu/s1_Schere_LOSS.glb', 'schere',
                     'schere1', mixer,
                     [-5, 0, -3.5], //-5, 0, -2
                     [0.1, 0.11, 0.1],
                     [0, 0, 0]);
                 break;
             case 'stein_LOSS':
-                spieler1.loadAnimation('assets/tom/neu/s1_Stein_LOSS.glb', 'stein',
+                spieler1.loadAnimationSchnax('assets/tom/neu/s1_Stein_LOSS.glb', 'stein',
                     'handRockDefault1', mixer,
                     [-5, 0, -3.5], //-5, 0, -2
                     [0.1, 0.11, 0.1],
@@ -237,7 +237,7 @@ function makeActions() {
                 break;
 
             case 'papier_LOSS':
-                spieler1.loadAnimation('assets/tom/neu/s1_Papier_LOSS.glb', 'papier',
+                spieler1.loadAnimationSchnax('assets/tom/neu/s1_Papier_LOSS.glb', 'papier',
                     'HandWave', mixer,
                     [-5, 0, -3.5], //-5, 0, -2
                     [0.1, 0.11, 0.1],
@@ -254,7 +254,7 @@ function makeActions() {
             //#######   SAME            #########
 
             case 'schere_SAME':
-                spieler2.loadAnimation('assets/tom/neu/s2_Schere_SAME.glb', 'schere',
+                spieler2.loadAnimationSchnax('assets/tom/neu/s2_Schere_SAME.glb', 'schere',
                     'scissorsHand', mixer,
                     [5, 0, -3.4], //position
                     [0.1, 0.11, 0.1], //size
@@ -262,7 +262,7 @@ function makeActions() {
                 break;
 
             case 'stein_SAME':
-                spieler2.loadAnimation('assets/tom/neu/s2_Stein_SAME.glb', 'stein',
+                spieler2.loadAnimationSchnax('assets/tom/neu/s2_Stein_SAME.glb', 'stein',
                     'handRockDefault2', mixer,
                     [5, 0.1, -3.4], //5, 0.1, -3.4
                     [0.1, 0.11, 0.1],
@@ -270,7 +270,7 @@ function makeActions() {
                 break;
 
             case 'papier_SAME':
-                spieler2.loadAnimation('assets/tom/neu/s2_Papier_SAME.glb', 'papier',
+                spieler2.loadAnimationSchnax('assets/tom/neu/s2_Papier_SAME.glb', 'papier',
                     'HandWave', mixer,
                     [5, 0.1, -3.4], //5, 0.1, -3.4
                     [0.1, 0.11, 0.1],
@@ -281,7 +281,7 @@ function makeActions() {
             //#######   WIN             #########
 
             case 'schere_WIN':
-                spieler2.loadAnimation('assets/tom/neu/s2_Schere_WIN.glb', 'schere',
+                spieler2.loadAnimationSchnax('assets/tom/neu/s2_Schere_WIN.glb', 'schere',
                     'scissorsHand', mixer,
                     [5, 0, -3.4], //position
                     [0.1, 0.11, 0.1], //size
@@ -289,7 +289,7 @@ function makeActions() {
                 break;
 
             case 'stein_WIN':
-                spieler2.loadAnimation('assets/tom/neu/s2_Stein_WIN.glb', 'stein',
+                spieler2.loadAnimationSchnax('assets/tom/neu/s2_Stein_WIN.glb', 'stein',
                     'handRockDefault2', mixer,
                     [5, 0.1, -3.4], //5, 0.1, -3.4
                     [0.1, 0.11, 0.1],
@@ -297,7 +297,7 @@ function makeActions() {
                 break;
 
             case 'papier_WIN':
-                spieler2.loadAnimation('assets/tom/neu/s2_Papier_WIN.glb', 'papier',
+                spieler2.loadAnimationSchnax('assets/tom/neu/s2_Papier_WIN.glb', 'papier',
                     'HandWave', mixer,
                     [5, 0.1, -3.4], //5, 0.1, -3.4
                     [0.1, 0.11, 0.1],
@@ -308,7 +308,7 @@ function makeActions() {
             //#######   LOSS            #########
 
             case 'schere_LOSS':
-                spieler2.loadAnimation('assets/tom/neu/s2_Schere_LOSS.glb', 'schere',
+                spieler2.loadAnimationSchnax('assets/tom/neu/s2_Schere_LOSS.glb', 'schere',
                     'scissorsHand', mixer,
                     [5, 0, -3.4], //position
                     [0.1, 0.11, 0.1], //size
@@ -316,7 +316,7 @@ function makeActions() {
                 break;
 
             case 'stein_LOSS':
-                spieler2.loadAnimation('assets/tom/neu/s2_Stein_LOSS.glb', 'stein',
+                spieler2.loadAnimationSchnax('assets/tom/neu/s2_Stein_LOSS.glb', 'stein',
                     'handRockDefault2', mixer,
                     [5, 0.1, -3.4], //5, 0.1, -3.4
                     [0.1, 0.11, 0.1],
@@ -324,7 +324,7 @@ function makeActions() {
                 break;
 
             case 'papier_LOSS':
-                spieler2.loadAnimation('assets/tom/neu/s2_Papier_LOSS.glb', 'papier',
+                spieler2.loadAnimationSchnax('assets/tom/neu/s2_Papier_LOSS.glb', 'papier',
                     'HandWave', mixer,
                     [5, 0.1, -3.4], //5, 0.1, -3.4
                     [0.1, 0.11, 0.1],
@@ -349,10 +349,10 @@ function loadSchnuckAnimation() {
     background3.removeAnimation();
     //spieler1.removeAnimation();
     //spieler2.removeAnimation();
-    background3.loadAnimation('assets/tom/only_schnuck.glb', 'schnuck',
+    background3.loadAnimationSchnax('assets/tom/neu/bg_schnuck.glb', 'schnuck',
         'schnickpick', mixer,
-        [0, 0.1, -6.5],
-        [0.2, 0.11, 0.1],//0.15, 0.15, 0.15
+        [0, 0, -7],
+        [0.15, 0.15, 0.15],//0.15, 0.15, 0.15
         [0, 0, 0])
     //background3.mixer.update(delta);
 }
@@ -403,19 +403,23 @@ class Result {
                 font: font,
                 size: 0.35,
                 //Tiefe des Textes -> Text hat keine Tiefe bei 0 (für 2D in 3D Szene)
-                height: 0,
+                height: 0.05,
                 //Anzahl der Kurvensegmente -> je höher desto glattere Kurven
                 curveSegments: 1,
             })
+            const htwGruen = new THREE.Color( 0x76B900 );
+            const textMaterial = new THREE.MeshPhongMaterial({color: '#f06305'});
+            const textMesh = new THREE.Mesh(textGeometry, textMaterial);
 
+            textMesh.castShadow = true; // Schattensetzung aktivieren
+            textMesh.receiveShadow = true; // Schatten empfangen aktivieren
+            textMesh.position.set(-3.35, 3, -2.3);
+            textMesh.rotation.y = 0;
 
-            const textMesh = new THREE.Mesh(textGeometry,
-                [new THREE.MeshPhongMaterial({color: 'red'}) //front
-                ])
-
-            textMesh.castShadow = true; //schatten
+            textMesh.castShadow = true; // Schatten
             textMesh.position.set(-3.35, 3, -1.3);
             textMesh.rotation.y = 0;
+
             scene.add(textMesh);
 
             currentResultTextMesh = textMesh;
@@ -438,22 +442,27 @@ class Result {
                 font: font,
                 size: 0.2,
                 //Tiefe des Textes -> Text hat keine Tiefe bei 0 (für 2D in 3D Szene)
-                height: 0,
+                height: 0.02,
                 //Anzahl der Kurvensegmente -> je höher desto glattere Kurven
                 curveSegments: 1,
             })
 
-            const textResetMesh = new THREE.Mesh(textGeometry,
-                [new THREE.MeshPhongMaterial({color: 'black'}) //front
-                ])
+            const textMaterial = new THREE.MeshPhongMaterial({color: 'black'}/*MeshBasicMaterial({ color: 0x00ffff }*/);
+            const textMesh = new THREE.Mesh(textGeometry, textMaterial);
 
-            textResetMesh.castShadow = true; //schatten
-            textResetMesh.position.set(-2.35, 2, -1.3);
-            textResetMesh.rotation.y = 0;
-            scene.add(textResetMesh);
+            textMesh.castShadow = true; //schatten
+            textMesh.receiveShadow = true;
+            textMesh.position.set(-2.35, 2, -1.3);
+            textMesh.rotation.y = 0;
+            scene.add(textMesh);
 
-            currentRestartTextMesh = textResetMesh;
+            currentRestartTextMesh = textMesh;
+
+
+
         });
+
+
     }
 
     removeRestartNotice() {
@@ -533,8 +542,8 @@ function resetStage() {
 //Funktion um Ergebnis zu finden
 function findOutcome() {
     let resultMessage;
-    let Spieler2WinMessage = '\n              Spieler 2\n         hat gewonnen!';
-    let Spieler1WinMessage = '\n              Spieler1\n          hat gewonnen!'
+    let Spieler2WinMessage = '\n              Spieler 2\n          hat gewonnen!';
+    let Spieler1WinMessage = '\n              Spieler 1\n          hat gewonnen!'
     let UnentschiedenMessage = '\n\n          Unentschieden!'
 
 
