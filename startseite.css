@@ -1,9 +1,8 @@
 .startButton {
     color: white;
     background-color: #0000cc;
-    position: relative;
-    bottom: -580px;
-    left: 610px;
+    position: absolute;
+    left: 43%;
     padding: 10px 20px;
     border: none;
     cursor: pointer;
@@ -11,6 +10,26 @@
     font-size: 20px;
     width: 180px;
     border-radius: 10px;
+    bottom: 100px;
+}
+
+.welcomeText{
+    font-size: 25px;
+    color: #f44306;
+    font-weight: bold;
+    font-family: 'Roboto Mono', monospace;
+    bottom: 200px;
+    position: absolute;
+    left: 30%;
+    text-align: center;
 
 }
+
+body, html {
+    overflow-x: hidden;
+    overflow-y: hidden;
+    max-width: 100%;
+    max-height: 100%;
+}
+
 
