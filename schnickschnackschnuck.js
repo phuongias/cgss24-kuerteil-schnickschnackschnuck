@@ -123,33 +123,33 @@ class DreiDObjekt {
 function loadDefaultAnimation() {
 
     //links
-    spieler1.loadAnimationSchnax('assets/tom/main_mirror_schnickschnack.glb', 'faust',
+    spieler1.loadAnimationSchnax('assets/animations/main_mirror_schnickschnack.glb', 'faust',
         'handRockDefault1', mixer,
         [-5, -0.7, -3.5], //-5, 0, -2
         [0.1, 0.11, 0.1],
         [0, 0, 0]);
 
     //rechts
-    spieler2.loadAnimationSchnax('assets/tom/main_schnickschnack.glb', 'faust',
+    spieler2.loadAnimationSchnax('assets/animations/main_schnickschnack.glb', 'faust',
         'handRockDefault2', mixer,
         [5, -0.7, -3.4], //5, 0.1, -3.4
         [0.1, 0.11, 0.1],
         [0, -0.9, 0]);
 
 
-    background1.loadAnimationSchnax('assets/tom/neu/bg_schnick.glb', 'schnick',
+    background1.loadAnimationSchnax('assets/animations/neu/bg_schnick.glb', 'schnick',
         'schnickpick', mixer,
         [0, 0.15, 0],
         [1, 1, 1],
         [0, 0, 0])
 
-    background2.loadAnimationSchnax('assets/tom/neu/bg_schnack.glb', 'schnack',
+    background2.loadAnimationSchnax('assets/animations/neu/bg_schnack.glb', 'schnack',
         'schnickpick', mixer,
         [0, -0.05, 0],
         [1, 1, 1],
         [0, 0, 0])
 
-    background3.loadAnimationSchnax('assets/tom/only_schnuck_placeholder.glb', 'schnuck2',
+    background3.loadAnimationSchnax('assets/animations/neu/only_schnuck_placeholder.glb', 'schnuck2',
         'schnickpick', mixer,
         [5, 0.1, -200],
         [0.1, 0.11, 0.1],
@@ -170,14 +170,14 @@ function makeActions() {
             //#######   SAME            #########
 
             case 'schere_SAME':
-                spieler1.loadAnimationSchnax('assets/tom/neu/s1_Schere_SAME.glb', 'schere',
+                spieler1.loadAnimationSchnax('assets/animations/neu/s1_Schere_SAME.glb', 'schere',
                     'schere1', mixer,
                     [-5, 0, -3.5], //-5, 0, -2
                     [0.1, 0.11, 0.1],
                     [0, 0, 0]);
                 break;
             case 'stein_SAME':
-                spieler1.loadAnimationSchnax('assets/tom/neu/s1_Stein_SAME.glb', 'stein',
+                spieler1.loadAnimationSchnax('assets/animations/neu/s1_Stein_SAME.glb', 'stein',
                     'handRockDefault1', mixer,
                     [-5, 0, -3.5], //-5, 0, -2
                     [0.1, 0.11, 0.1],
@@ -185,7 +185,7 @@ function makeActions() {
                 break;
 
             case 'papier_SAME':
-                spieler1.loadAnimationSchnax('assets/tom/neu/s1_Papier_SAME.glb', 'papier',
+                spieler1.loadAnimationSchnax('assets/animations/neu/s1_Papier_SAME.glb', 'papier',
                     'HandWave', mixer,
                     [-5, 0, -3.5], //-5, 0, -2
                     [0.1, 0.11, 0.1],
@@ -196,14 +196,14 @@ function makeActions() {
             //#######   WIN             #########
 
             case 'schere_WIN':
-                spieler1.loadAnimationSchnax('assets/tom/neu/s1_Schere_WIN.glb', 'schere',
+                spieler1.loadAnimationSchnax('assets/animations/neu/s1_Schere_WIN.glb', 'schere',
                     'schere1', mixer,
                     [-5, 0, -3.5], //-5, 0, -2
                     [0.1, 0.11, 0.1],
                     [0, 0, 0]);
                 break;
             case 'stein_WIN':
-                spieler1.loadAnimationSchnax('assets/tom/neu/s1_Stein_WIN.glb', 'stein',
+                spieler1.loadAnimationSchnax('assets/animations/neu/s1_Stein_WIN.glb', 'stein',
                     'handRockDefault1', mixer,
                     [-5, 0, -3.5], //-5, 0, -2
                     [0.1, 0.11, 0.1],
@@ -211,7 +211,7 @@ function makeActions() {
                 break;
 
             case 'papier_WIN':
-                spieler1.loadAnimationSchnax('assets/tom/neu/s1_Papier_WIN.glb', 'papier',
+                spieler1.loadAnimationSchnax('assets/animations/neu/s1_Papier_WIN.glb', 'papier',
                     'HandWave', mixer,
                     [-5, 0, -3.5], //-5, 0, -2
                     [0.1, 0.11, 0.1],
@@ -222,14 +222,14 @@ function makeActions() {
             //#######   LOSS            #########
 
             case 'schere_LOSS':
-                spieler1.loadAnimationSchnax('assets/tom/neu/s1_Schere_LOSS.glb', 'schere',
+                spieler1.loadAnimationSchnax('assets/animations/neu/s1_Schere_LOSS.glb', 'schere',
                     'schere1', mixer,
                     [-5, 0, -3.5], //-5, 0, -2
                     [0.1, 0.11, 0.1],
                     [0, 0, 0]);
                 break;
             case 'stein_LOSS':
-                spieler1.loadAnimationSchnax('assets/tom/neu/s1_Stein_LOSS.glb', 'stein',
+                spieler1.loadAnimationSchnax('assets/animations/neu/s1_Stein_LOSS.glb', 'stein',
                     'handRockDefault1', mixer,
                     [-5, 0, -3.5], //-5, 0, -2
                     [0.1, 0.11, 0.1],
@@ -237,7 +237,7 @@ function makeActions() {
                 break;
 
             case 'papier_LOSS':
-                spieler1.loadAnimationSchnax('assets/tom/neu/s1_Papier_LOSS.glb', 'papier',
+                spieler1.loadAnimationSchnax('assets/animations/neu/s1_Papier_LOSS.glb', 'papier',
                     'HandWave', mixer,
                     [-5, 0, -3.5], //-5, 0, -2
                     [0.1, 0.11, 0.1],
@@ -254,7 +254,7 @@ function makeActions() {
             //#######   SAME            #########
 
             case 'schere_SAME':
-                spieler2.loadAnimationSchnax('assets/tom/neu/s2_Schere_SAME.glb', 'schere',
+                spieler2.loadAnimationSchnax('assets/animations/neu/s2_Schere_SAME.glb', 'schere',
                     'scissorsHand', mixer,
                     [5, 0, -3.4], //position
                     [0.1, 0.11, 0.1], //size
@@ -262,7 +262,7 @@ function makeActions() {
                 break;
 
             case 'stein_SAME':
-                spieler2.loadAnimationSchnax('assets/tom/neu/s2_Stein_SAME.glb', 'stein',
+                spieler2.loadAnimationSchnax('assets/animations/neu/s2_Stein_SAME.glb', 'stein',
                     'handRockDefault2', mixer,
                     [5, 0.1, -3.4], //5, 0.1, -3.4
                     [0.1, 0.11, 0.1],
@@ -270,7 +270,7 @@ function makeActions() {
                 break;
 
             case 'papier_SAME':
-                spieler2.loadAnimationSchnax('assets/tom/neu/s2_Papier_SAME.glb', 'papier',
+                spieler2.loadAnimationSchnax('assets/animations/neu/s2_Papier_SAME.glb', 'papier',
                     'HandWave', mixer,
                     [5, 0.1, -3.4], //5, 0.1, -3.4
                     [0.1, 0.11, 0.1],
@@ -281,7 +281,7 @@ function makeActions() {
             //#######   WIN             #########
 
             case 'schere_WIN':
-                spieler2.loadAnimationSchnax('assets/tom/neu/s2_Schere_WIN.glb', 'schere',
+                spieler2.loadAnimationSchnax('assets/animations/neu/s2_Schere_WIN.glb', 'schere',
                     'scissorsHand', mixer,
                     [5, 0, -3.4], //position
                     [0.1, 0.11, 0.1], //size
@@ -289,7 +289,7 @@ function makeActions() {
                 break;
 
             case 'stein_WIN':
-                spieler2.loadAnimationSchnax('assets/tom/neu/s2_Stein_WIN.glb', 'stein',
+                spieler2.loadAnimationSchnax('assets/animations/neu/s2_Stein_WIN.glb', 'stein',
                     'handRockDefault2', mixer,
                     [5, 0.1, -3.4], //5, 0.1, -3.4
                     [0.1, 0.11, 0.1],
@@ -297,7 +297,7 @@ function makeActions() {
                 break;
 
             case 'papier_WIN':
-                spieler2.loadAnimationSchnax('assets/tom/neu/s2_Papier_WIN.glb', 'papier',
+                spieler2.loadAnimationSchnax('assets/animations/neu/s2_Papier_WIN.glb', 'papier',
                     'HandWave', mixer,
                     [5, 0.1, -3.4], //5, 0.1, -3.4
                     [0.1, 0.11, 0.1],
@@ -308,7 +308,7 @@ function makeActions() {
             //#######   LOSS            #########
 
             case 'schere_LOSS':
-                spieler2.loadAnimationSchnax('assets/tom/neu/s2_Schere_LOSS.glb', 'schere',
+                spieler2.loadAnimationSchnax('assets/animations/neu/s2_Schere_LOSS.glb', 'schere',
                     'scissorsHand', mixer,
                     [5, 0, -3.4], //position
                     [0.1, 0.11, 0.1], //size
@@ -316,7 +316,7 @@ function makeActions() {
                 break;
 
             case 'stein_LOSS':
-                spieler2.loadAnimationSchnax('assets/tom/neu/s2_Stein_LOSS.glb', 'stein',
+                spieler2.loadAnimationSchnax('assets/animations/neu/s2_Stein_LOSS.glb', 'stein',
                     'handRockDefault2', mixer,
                     [5, 0.1, -3.4], //5, 0.1, -3.4
                     [0.1, 0.11, 0.1],
@@ -324,7 +324,7 @@ function makeActions() {
                 break;
 
             case 'papier_LOSS':
-                spieler2.loadAnimationSchnax('assets/tom/neu/s2_Papier_LOSS.glb', 'papier',
+                spieler2.loadAnimationSchnax('assets/animations/neu/s2_Papier_LOSS.glb', 'papier',
                     'HandWave', mixer,
                     [5, 0.1, -3.4], //5, 0.1, -3.4
                     [0.1, 0.11, 0.1],
@@ -349,7 +349,7 @@ function loadSchnuckAnimation() {
     background3.removeAnimation();
     //spieler1.removeAnimation();
     //spieler2.removeAnimation();
-    background3.loadAnimationSchnax('assets/tom/neu/bg_schnuck.glb', 'schnuck',
+    background3.loadAnimationSchnax('assets/animations/neu/bg_schnuck.glb', 'schnuck',
         'schnickpick', mixer,
         [0, 0, -7],
         [0.15, 0.15, 0.15],//0.15, 0.15, 0.15
