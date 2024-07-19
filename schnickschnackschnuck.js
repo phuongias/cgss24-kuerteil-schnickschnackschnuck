@@ -614,7 +614,7 @@ function findOutcome() {
             spieler1Animation = 'papier_LOSS'; //papier
             spieler2Animation = 'schere_WIN';  //Schere
             resultMessage = Spieler2WinMessage;
-            score.addScorePlayer1();
+            score.addScorePlayer2();
 
 
         } else if (spieler1Choice === 'e' && spieler2Choice === 'o') {
@@ -632,7 +632,7 @@ function findOutcome() {
 
         //Quelle: https://stackoverflow.com/questions/16873323/javascript-sleep-wait-before-continuing
         setTimeout(function(){
-            result.showRestartNotice("\n\n\n\n\n\n\n\n\n\n\n\nDrücke M, um eine weitere Runde zu starten :)\nDrücke X, um die Punkte zurückzusetzen.");
+            result.showRestartNotice("\n\n\n\n\n\n\n\n\n\n\n\nDrücke M, um eine weitere Runde zu starten. \nDrücke X, um die Punkte zurückzusetzen.");
         }, 3300);
 
     }
@@ -660,8 +660,8 @@ function guiControlFunction(camera, renderer) {
     let controls = new function () {
         this.freeCamera = false;
         this.frontView = function () {
-            camera.position.set(0, 0, 3.4);
-            camera.lookAt(new THREE.Vector3(0, 0.5, 0))
+            camera.position.set(0, 0, 3);
+            camera.lookAt(new THREE.Vector3(0, 0, 0))
             camera.updateProjectionMatrix();
 
         };

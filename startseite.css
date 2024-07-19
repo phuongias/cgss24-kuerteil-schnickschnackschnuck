@@ -18,9 +18,19 @@
     color: #f44306;
     font-weight: bold;
     font-family: 'Roboto Mono', monospace;
-    bottom: 200px;
+    bottom: 300px;
     position: absolute;
     left: 30%;
+    text-align: center;
+}
+
+.creators{
+    font-size: 20px;
+    color: #0a0a0b;
+    font-family: 'Roboto Mono', monospace;
+    bottom: 190px;
+    position: absolute;
+    left: 42%;
     text-align: center;
 
 }
