@@ -100,11 +100,13 @@ class DreiDObjekt {
     choosesActionPlayer1(choice) {
         spieler1Choice = choice;
         this.countdown.checkCountdown();
+        //this.countdown.startCountdown();
     }
 
     choosesActionPlayer2(choice) {
         spieler2Choice = choice;
         this.countdown.checkCountdown();
+        //this.countdown.startCountdown();
     }
 }
 
@@ -150,6 +152,9 @@ function loadDefaultAnimation() {
 
 
 //Methode um Stein, Papier oder Schere auszuführen
+// entscheidet auf Grundlage von spieler1&2Animation, welche Animation ausgeführt wird
+// spieler1Animation und spieler2Animation wird in findOutcome() befüllt
+// aufgerufen werden makeActions() und findOutcome() in Countdown(), welcher in Countdown-Klasse instanziiert wird
 function makeActions() {
     if (spieler1Choice && spieler2Choice) {//wenn beide Spieler gedrückt haben
 
@@ -157,7 +162,7 @@ function makeActions() {
         switch (spieler1Animation) {
 
             //#######   Spieler 1       #########
-            //#######   SAME            #########
+            //#######   SAME            ######### (Unentschieden - neutrale Animationen, ohne Gewinner oder Verlierer-Animationen)
 
             case 'schere_SAME':
                 spieler1.loadAnimationSchnax('assets/animations/neu/s1_Schere_SAME.glb', 'schere',
@@ -183,7 +188,7 @@ function makeActions() {
                 break;
 
             //#######   Spieler 1       #########
-            //#######   WIN             #########
+            //#######   WIN             ######### (Gewinner-Animationen)
 
             case 'schere_WIN':
                 spieler1.loadAnimationSchnax('assets/animations/neu/s1_Schere_WIN.glb', 'schere',
@@ -209,7 +214,7 @@ function makeActions() {
                 break;
 
             //#######   Spieler 1       #########
-            //#######   LOSS            #########
+            //#######   LOSS            ######### (Verlierer-Anmiationen
 
             case 'schere_LOSS':
                 spieler1.loadAnimationSchnax('assets/animations/neu/s1_Schere_LOSS.glb', 'schere',
@@ -238,7 +243,7 @@ function makeActions() {
 
 
         spieler2.removeAnimation();
-        switch (spieler2Animation) {
+        switch (spieler2Animation) { // Beschreibung siehe Spieler 1
 
             //#######   Spieler 2       #########
             //#######   SAME            #########
@@ -326,10 +331,10 @@ function makeActions() {
 
 
     }
-    spieler1Choice = null;
+    spieler1Choice = null; // Resetten der Spielerentscheidungen
     spieler2Choice = null;
 
-    isGameOver = true;
+    isGameOver = true; // Runde beendet
 
 }
 
@@ -348,7 +353,14 @@ function loadSchnuckAnimation() {
 }
 
 class Countdown {
-//Countdown -Code
+//Countdown: Checke alle 100ms, ob beide Spieler gewählt haben
+    // Wird von jedem instanziierten 3D-Objekt ausgeführt
+    // -> Solange nicht beide Spieler gewählt haben und der Countdown nicht abgelaufen ist, können die Actions überschrieben werden.
+    // Bei 100ms ist das recht schwierig, aber an sich möglich...
+    // Da jedes 3-D-Objekt in seiner eigenen Instanz eines Countdowns diese Methode (wahrscheinlich zu einem anderen Zeitpunkt != %100)
+    // ausführt, ist der Abstand der Zeitpunkte, zu dem die Spieler-Entscheidungen überprüft werden, höchstwahrscheinlich sehr klein.
+    // Wahrscheinlich nimmt diese Implementierung weniger Rechenpower, aber genauso viel Schedulerzeit und mehr Arbeitsspeicher in Anspruch,
+    // als eine globale Variante. Sie war aber unser erster Ansatz, es funktioniert und wir haben uns entschieden, es so zu lassen.
 //Quelle: https://stackoverflow.com/questions/31106189/create-a-simple-10-second-countdown
     startCountdown() {
         loadSchnuckAnimation();
@@ -371,7 +383,7 @@ class Countdown {
         }, 100);
     }
 
-//Funktion um Countdown zu überprüfen, ob beide Spieler gewählt haben
+//Funktion, um Countdown zu überprüfen, ob beide Spieler gewählt haben
     checkCountdown() {
         if (spieler1Choice && spieler2Choice) {
             this.startCountdown();
