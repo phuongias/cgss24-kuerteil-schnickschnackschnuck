@@ -2,7 +2,7 @@
 // Fonts: https://www.dafont.com/bridgers-brush.font
 // Fonts: https://www.dafont.com/longevity-2.font
 
-
+//Hauptaufruf der grundlegenden Logik
 document.addEventListener('DOMContentLoaded', function () {
     onWindowResize();
     init();
@@ -28,24 +28,23 @@ const light = new THREE.DirectionalLight(0xffffff, 1);
 const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
 const fontLoader = new THREE.FontLoader();
 
-
+//3D-Objekte
+let background1 = null; // 3 background 3d-objekte,
+let background2 = null; // um Animationen zeitgleich
+let background3 = null; // zeigen zu können (schnick, schnack und schnuck)
 let spieler1 = null;
 let spieler2 = null;
-let spieler3 = null;
-let background1 = null;
-let background2 = null;
-let background3 = null;
 
-let spieler1Choice = null;
-let spieler1Animation = null;
+let spieler1Choice = null; //speichert gewählten key
 let spieler2Choice = null;
-let spieler2Animation = null;
+let spieler1Animation = null; // speichert animations-identifier, um entsprechende Animation zu laden
+let spieler2Animation = null; // in findOutcome() wird entschieden, ob es eine Gewinner- oder Verliereranimation sein soll
 
 let spieler1score = 0;
 let spieler2score = 0;
 
-let currentResultTextMesh = null;
-let currentRestartTextMesh = null;
+let currentResultTextMesh = null; //wer hat gerade gewonnen?
+let currentRestartTextMesh = null;  //neustarten?-message
 
 
 //Spieler Klasse
@@ -55,19 +54,18 @@ class DreiDObjekt {
     constructor(name) {
         this.name = name;
         this.mixer = null;
-        this.handName = null;
+        this.handName = null; //dient als identifier (siehe tutorial) s.u.
     }
 
     //Methode zum Laden der Handanimation
     //Quelle: https://youtu.be/yPA2z7fl4J8?si=F7DOcu4_3Tney-4F -> Load 3D Object from blender in Three.js
     //Quelle: https://youtu.be/GByT8ActvDk?si=C7BWX5MIsQl_UmwL -> Load Animation frm blender in Three.js
-
+    //loadAnimation() clashes with built-in function
     loadAnimationSchnax(path, animationName, handName, mixer, position, scale, rotation) {
-        const loader = new THREE.GLTFLoader();
+        const loader = new THREE.GLTFLoader(); //best for our purposes
         loader.load(path, (glb) => {
             console.log(glb);
             this.handName = glb.scene;
-
             this.handName.scale.set(...scale);
             this.handName.rotation.set(...rotation);
             this.handName.position.set(...position);
@@ -77,13 +75,6 @@ class DreiDObjekt {
             const clip = THREE.AnimationClip.findByName(clips, animationName);
             const action = this.mixer.clipAction(clip);
             action.play();
-            const textureLoader = new TextureLoader();
-            const texture = textureLoader.load('./assets/pakettextur.jpg', (texture) => {
-                texture.wrapS = THREE.RepeatWrapping;
-                texture.wrapT = THREE.RepeatWrapping;
-                texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
-                texture.needsUpdate = true;
-            });
             object.traverse(function (child) {
                 if (child instanceof THREE.Mesh) {
                     child.material = new THREE.MeshStandardMaterial({map: texture});
@@ -106,7 +97,6 @@ class DreiDObjekt {
     }
 
     //Funktion, um Aktionswahl zu speichern
-
     choosesActionPlayer1(choice) {
         spieler1Choice = choice;
         this.countdown.checkCountdown();
@@ -119,38 +109,38 @@ class DreiDObjekt {
 }
 
 
-//default Faust Animation
+//default Faust Animation (schnick schnack der Hände und schnick schnack der Texte)
 function loadDefaultAnimation() {
 
     //links
     spieler1.loadAnimationSchnax('assets/animations/main_mirror_schnickschnack.glb', 'faust',
-        'handRockDefault1', mixer,
+        'schnick_hand', mixer,
         [-5, -0.7, -3.5], //-5, 0, -2
         [0.1, 0.11, 0.1],
         [0, 0, 0]);
 
     //rechts
     spieler2.loadAnimationSchnax('assets/animations/main_schnickschnack.glb', 'faust',
-        'handRockDefault2', mixer,
+        'schnack_hand', mixer,
         [5, -0.7, -3.4], //5, 0.1, -3.4
         [0.1, 0.11, 0.1],
         [0, -0.9, 0]);
 
 
     background1.loadAnimationSchnax('assets/animations/neu/bg_schnick.glb', 'schnick',
-        'schnickpick', mixer,
+        'schnick_text', mixer,
         [0, 0.15, 0],
         [1, 1, 1],
         [0, 0, 0])
 
     background2.loadAnimationSchnax('assets/animations/neu/bg_schnack.glb', 'schnack',
-        'schnickpick', mixer,
+        'schnack_text', mixer,
         [0, -0.05, 0],
         [1, 1, 1],
         [0, 0, 0])
 
     background3.loadAnimationSchnax('assets/animations/neu/only_schnuck_placeholder.glb', 'schnuck2',
-        'schnickpick', mixer,
+        'just for workaround purpose', mixer,
         [5, 0.1, -200],
         [0.1, 0.11, 0.1],
         [0, 0, 0])
@@ -687,10 +677,9 @@ function init() {
 
     spieler1 = new DreiDObjekt("Spieler 1 / links");
     spieler2 = new DreiDObjekt("Spieler 2 / rechts");
-    spieler3 = new DreiDObjekt("Spieler 2 / rechts");
-    background1 = new DreiDObjekt("awdawd");
-    background2 = new DreiDObjekt("awdawd");
-    background3 = new DreiDObjekt("awdawd");
+    background1 = new DreiDObjekt("schnick");
+    background2 = new DreiDObjekt("schnack");
+    background3 = new DreiDObjekt("schnuck");
     let score = new Score();
     //Hintergrundbild
     const loader = new THREE.TextureLoader();
