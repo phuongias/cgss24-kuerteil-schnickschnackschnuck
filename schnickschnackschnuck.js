@@ -13,7 +13,7 @@ window.addEventListener('resize', onWindowResize, false);
 
 let isGameOver = false;
 let mixer = null;
-let wantsReset = false;
+let wantsReset = false; // Für Reset-Logik s.u.
 
 
 const clock = new THREE.Clock();
@@ -436,7 +436,7 @@ class Result {
         }
     }
 
-    //Funktion um Restart anzuzeigen
+    //Funktion um Restart (Drücke "M"...) anzuzeigen
     showRestartNotice(resetText) {
         fontLoader.load('assets/fonts/regularDay.json', (font) => {
             const textGeometry = new THREE.TextGeometry(resetText, {
@@ -466,6 +466,7 @@ class Result {
 
     }
 
+    //Funktion, um die Anzeige wieder zu löschen, damit die nächste Runde gestartet werden kann
     removeRestartNotice() {
         if (currentRestartTextMesh) {
             scene.remove(currentRestartTextMesh);
@@ -513,7 +514,9 @@ class Score {
 const result = new Result();
 const score = new Score();
 
-//Funktion, um einzelnes Spiel zurückzusetzen
+
+//Funktion, um einzelnes Spiel zurückzusetzen, damit neues gestartet werden kann
+//er löscht also alte Results und setzt choices wieder auf null, damit Spieler neu wählen können
 function resetStage() {
     console.log("Stage resetted");
 
@@ -627,6 +630,9 @@ function findOutcome() {
             resultMessage = Spieler1WinMessage;
             score.addScorePlayer1();
         }
+
+        //lässt Ergebnis erst anzeigen, wenn Animationen fertig abgespielt wurde
+        //deswegen das Timeout
         //Quelle: https://stackoverflow.com/questions/16873323/javascript-sleep-wait-before-continuing
         setTimeout(function () {
             result.showResult(resultMessage);
@@ -650,7 +656,7 @@ function onWindowResize() {
     renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
-//GUI für die Kamera-Einstellung
+//GUI für die Kamera-Einstellung mit OrbitControls
 function guiControlFunction(camera, renderer) {
     const orbitControls = new THREE.OrbitControls(camera, renderer.domElement);
     orbitControls.noZoom = false;
@@ -702,7 +708,7 @@ function init() {
 
 
 
-
+    //Kamera
     camera.position.set(0, 0, 3);
     camera.lookAt(new THREE.Vector3(0, 0, 0));
 
@@ -730,10 +736,9 @@ function init() {
     document.addEventListener('keydown', (event) => {
         const key = event.key.toLowerCase(); //taste wird abgespeichert
 
-
         //Restart Game
         if (!isGameOver) {
-            wantsReset = false;
+            wantsReset = false; // Reset des Reset-Wunsches bei Runden-Ende
             //Spieler 1
             if (key === 'q') {
                 //Schere
@@ -760,12 +765,13 @@ function init() {
         } else if (key === 'm') {
             resetStage();
         } else if (key === 'x') {
-            wantsReset = true;
+            wantsReset = true; // Ermöglicht folgendem Keylistener auf 'y' zu lauschen. Dies ist sonst permanent möglich.
             result.removeRestartNotice();
             result.showRestartNotice("\n\n\n\n\n\n\n\n\n\n\n\n\nDrücke Y, um Punktereset zu bestätigen. \n\nDrücke M, um die Punkte zu behalten.)");
             document.addEventListener('keydown', (reset) => {
                 const key = reset.key.toLowerCase();
-                if (key === 'y' && wantsReset) {
+                if (key === 'y' && wantsReset) { // Nur möglich, wenn vorher 'x' gedrückt wurde. Wenn nicht 'wantsReset' abgefragt werden würde,
+                    // würde zu jeder Zeit ein Reset des Spiels möglich sein.
                     score.resetScores();
                     resetStage();
                 }
@@ -783,7 +789,9 @@ function init() {
 function animate() {
 
     requestAnimationFrame(animate);
+
     const delta = clock.getDelta();
+
 
     if (background1 && background1.mixer) {
         background1.mixer.update(delta);
