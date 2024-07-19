@@ -407,7 +407,6 @@ class Result {
                 //Anzahl der Kurvensegmente -> je höher desto glattere Kurven
                 curveSegments: 1,
             })
-            const htwGruen = new THREE.Color( 0x76B900 );
             const textMaterial = new THREE.MeshPhongMaterial({color: '#f06305'});
             const textMesh = new THREE.Mesh(textGeometry, textMaterial);
 
