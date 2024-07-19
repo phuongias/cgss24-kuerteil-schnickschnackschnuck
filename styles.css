@@ -16,7 +16,7 @@ h1 {
 
 #spieler1score{
     font-size: 60px;
-    color: #ff638d;
+    color: #f44306;
     font-weight: bold;
     font-family: 'Roboto Mono', monospace;
     position: absolute;
@@ -26,7 +26,7 @@ h1 {
 
 #spieler2score{
     font-size: 60px;
-    color: #ff638d;
+    color: #ea420b;
     font-weight: bold;
     font-family: 'Roboto Mono', monospace;
     position: absolute;
@@ -50,15 +50,19 @@ h1 {
     right: 0;
     top: 20px;
     padding-right: 20px;
+
 }
 
 /*th = table header*/
 .controls-table-spieler1 th {
-    color: #ff638d;
+    color: #ea420b;
+    font-size: 20px;
+
 }
 
 .controls-table-spieler2 th {
-    color: #ff638d;
+    font-size: 20px;
+    color: #ea420b;
 }
 
 /*verhindert das scrollen*/
